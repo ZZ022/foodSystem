@@ -38,6 +38,10 @@
         data:{"post":$('#post').val(),"uid":uid},
         success:function(res){
             console.log('success');
+<<<<<<< HEAD
+=======
+            window.location.href = '/post/surf'
+>>>>>>> 6f5c4cc... first commit
         }
     })
     })
@@ -45,8 +49,16 @@
     $('#favor').click(function(){
         $.ajax(
             {
+<<<<<<< HEAD
                 url:'test/favor',
                 data:{"btnid": btnid},
+=======
+                url:'/api/likedAdd',
+                data:{
+                    "btnid": btnid,
+                    "uid":uid
+                },
+>>>>>>> 6f5c4cc... first commit
                 success:function(res){
                     console.log(res);
                 }
