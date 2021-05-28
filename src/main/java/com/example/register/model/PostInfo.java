@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.persistence.*;
 import java.util.Date;
-
+import java.util.List;
 
 
 @Entity
@@ -19,6 +19,10 @@ public class PostInfo {
     private Date date;
     @Column(name="content")
     private String content;
+
+    @OneToMany(targetEntity = LikedInfo.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "postId")
+    List<PostInfo> LikedInfos;
 
     public int getnId() {
         return nId;
@@ -35,6 +39,10 @@ public class PostInfo {
     }
 
     public PostInfo(){};
+
+    public List<PostInfo> getLikedInfos() {
+        return LikedInfos;
+    }
 
     public Date getDate() {
         return date;

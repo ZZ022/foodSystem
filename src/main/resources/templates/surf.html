@@ -67,6 +67,30 @@
     )
 
     function approve(postId){
+        $.ajax(
+            {
+                url:'food/liked',
+                type:"post",
+                data:{"postId":postId, "uid": uid},
+                success: function (res){
+                    console.log("success");
+                }
+            }
+        )
+    }
+
+    function getLikeNum(postId){
+        var num;
+        $.ajax(
+            {
+                url:'post/LikeNum',
+                data:{"postId":postId},
+                success: function(res){
+                    num = res;
+                }
+            }
+        )
+        return num;
     }
     
     function surf(res){
@@ -77,11 +101,13 @@
                 <br> \
                 date:{2}&nbsp;userId:{3}\
                 <br>\
+                <br>点赞数:{4}\
                 <button id=\"btn{0}\" onclick = approve({0})>点赞</button>\
             </div>\
             "
         for(var i=0;i<res.length;i++){
             let postId = res[i].nId;
+            let likenum = getLikeNum(postId);
             innerhtml += template.format(postId, res[i].content, res[i].date, res[i].userId);
         }
         divPostArea.append(innerhtml);
