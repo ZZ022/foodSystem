@@ -1,0 +1,54 @@
+package com.example.register.model;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import javax.persistence.*;
+import java.util.Date;
+
+
+
+@Entity
+@Table(name="T_postInfo", indexes = {@Index(columnList = "date")})
+public class PostInfo {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int nId;
+    @Column(name="userId")
+    private int userId;
+    @Column(name="date")
+    private Date date;
+    @Column(name="content")
+    private String content;
+
+    public int getnId() {
+        return nId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public PostInfo(User user, Date date, String content){
+        this.userId = user.getId();
+        this.date = date;
+        this.content = content;
+    }
+
+    public PostInfo(){};
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+}

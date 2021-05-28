@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>帖子</title>
+</head>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+<body>
+    <form action="/post/submit" id="postForm">
+        <input type="text"  id="post">
+        <input type="submit"  value="submit" id="submit">
+    </form>
+    <button id="favor">点赞</button>
+</body>
+<script>
+    var searchParams = new URLSearchParams(new URL(location.href).search);
+    const uid = Number(searchParams.get('uid'));
+    $.ajax({
+        url:"/data/login",
+        type:"post",
+        data:{"uid":uid},
+        success:function(res){
+        }
+        })
+    window.onbeforeunload =  function (){
+        $.ajax({
+        url:"/data/logout",
+        type:"post",
+        data:{"uid":uid},
+        success:function(res){
+        }
+    })
+    };
+    $('#postForm').submit(function(){
+    $.ajax({
+        url:"/post/submit",
+        type:"post",
+        data:{"post":$('#post').val(),"uid":uid},
+        success:function(res){
+            console.log('success');
+        }
+    })
+    })
+    var btnid = 23;
+    $('#favor').click(function(){
+        $.ajax(
+            {
+                url:'test/favor',
+                data:{"btnid": btnid},
+                success:function(res){
+                    console.log(res);
+                }
+            }
+        )
+    })
+</script>
+</html>

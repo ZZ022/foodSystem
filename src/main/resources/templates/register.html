@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>注册</title>
+</head>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+<body>
+    <h5>输入用户名</h5>
+    <input type="text" id="username">
+    <h5>输入密码</h5>
+    <input type="password" id="password">
+    <button id="register">注册</button>
+</body>
+<script>
+    $('#register').click(function(){
+        let username = $('#username').val();
+        let password = $('#username').val();
+        $.ajax({
+            url:"/register/submit",
+            type: "post",
+            data:{"username":username,"password":password},
+            success:function(res){
+                alert(res);
+            }
+        })
+    })
+    
+</script>
+</html>
