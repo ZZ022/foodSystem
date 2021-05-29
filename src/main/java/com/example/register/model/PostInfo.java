@@ -28,6 +28,12 @@ public class PostInfo {
     @JoinColumn(name = "id")
     private Foodtag foodtag;
 
+    @Column(name = "lat")
+    private float latitude;
+
+    @Column(name = "lon")
+    private float longtitude;
+
     @OneToMany(targetEntity = Media.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "id")
     private List<Media> medias;
@@ -39,6 +45,23 @@ public class PostInfo {
     public int getUserId() {
         return userId;
     }
+
+    public float getLon() {
+        return longtitude;
+    }
+
+    public void setLongtitude(float longtitude) {
+        this.longtitude = longtitude;
+    }
+
+    public void setLatitude(float latitude) {
+        this.latitude = latitude;
+    }
+
+    public float getLatitude() {
+        return latitude;
+    }
+
 
     public PostInfo(User user, Date date, String content){
         this.userId = user.getId();
@@ -74,6 +97,8 @@ public class PostInfo {
         post.setLikedNum(likedInfos.size());
         post.setTag(foodtag.getName());
         post.setContent(content);
+        post.setLat(latitude);
+        post.setLon(longtitude);
         List<String> paths = new ArrayList<String>();
         for(int i=0;i<medias.size();i++){
             paths.add(medias.get(i).getPath());

@@ -246,7 +246,7 @@
                                  <div class="status-indicator bg-success"></div>
                               </div>
                               <div class="w-100">
-                                 <textarea placeholder="我想分享..." class="form-control border-0 p-0 shadow-none" rows="3"></textarea>
+                                 <textarea placeholder="我想分享..." class="form-control border-0 p-0 shadow-none" rows="3" id="sendArea"></textarea>
                               </div>
                            </div>
                         </div>
@@ -262,11 +262,12 @@
                         </div> -->
                      </div>
                      <div class="border-top p-3 d-flex align-items-center">
-                        <div class="mr-auto"><a href="#" class="text-link small"><i class="feather-at-sign"></i> 添加美食TAG</a></div>
-                        <div class="mr-auto"><a href="#" class="text-link small"><i class="feather-map-pin"></i> 添加位置</a></div>
+                        <!-- <div class="mr-auto"><a href="#" class="text-link small"><i class="feather-at-sign" id="addTag"></i> 添加美食TAG</a></div> -->
+                        <div class="mr-auto" id ="addTag"></div>
+                        <div class="mr-auto"><a href="#" class="text-link small"><i class="feather-map-pin" id="addPositon"></i> 添加位置</a></div>
                         <div class="flex-shrink-1">
-                           <button type="button" class="btn btn-light btn-sm">打开相册</button>
-                           <button type="button" class="btn btn-primary btn-sm">发布</button>
+                           <button type="button" class="btn btn-light btn-sm" id="btnAddImage">添加图片</button>
+                           <button type="button" class="btn btn-primary btn-sm" id="btnSendPost">发布</button>
                         </div>
                      </div>
                   </div>

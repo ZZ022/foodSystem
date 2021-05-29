@@ -10,16 +10,21 @@ public class Post {
     private String content;
     private String tag;
     private List<String> medias;
+    private float lon;
+    private float lat;
 
-    public Post(int id, String username, int likedNum, String content, String tag){
-        this.content = content;
-        this.likedNum = likedNum;
-        this.tag = tag;
-        this.username = username;
-        this.id = id;
-    }
+
+
 
     public Post(){}
+
+    public void setLat(float lat) {
+        this.lat = lat;
+    }
+
+    public void setLon(float lon) {
+        this.lon = lon;
+    }
 
     public void setContent(String content) {
         this.content = content;

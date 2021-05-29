@@ -6,13 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.example.register.model.*;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Controller
 public class MainController extends LoginController{
     @Autowired
-    PostInfoRepository postInfoRepository;
+    private PostInfoRepository postInfoRepository;
+
+    @Autowired
+    private TagRepository tagRepository;
 
     private int max_posts = 5;
 
@@ -86,5 +91,15 @@ public class MainController extends LoginController{
         System.out.println("liked success");
     }
 
-
+    @RequestMapping("data/addTag")
+    @ResponseBody
+    public List<String> addTag(){
+        List<Foodtag> foodTags = tagRepository.findAll();
+        List<String> foodStrings = new ArrayList<>();
+        for(int i=0;i<foodTags.size();i++){
+            foodStrings.add(foodTags.get(i).getName());
+        }
+        System.out.println(foodStrings);
+        return foodStrings;
+    }
 }
