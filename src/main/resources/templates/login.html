@@ -13,8 +13,7 @@
     <button id="login">登录</button>
     <button id="register">注册</button>
 </body>
-<script>
-    var userId;
+<script>;
     $('#login').click(function(){
         let username = $('#username').val();
         let password = $('#password').val();
@@ -35,8 +34,7 @@
                         alert("用户名不存在");
                         break;
                     default:
-                        userId = Number(res);
-                        location.href = "food?"+"uid=" + userId;
+                        location.href = "food?"+"uid=" + Number(res);
                         break;
                 }
             }

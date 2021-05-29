@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-public class PostController extends LoginController{
+public class MainController extends LoginController{
     @Autowired
     PostInfoRepository postInfoRepository;
 
@@ -27,8 +27,8 @@ public class PostController extends LoginController{
     @GetMapping("post")
     public String renderPost(){return "post";}
 
-    @GetMapping("food")
-    public String renderSurf(){return "surf";}
+    @GetMapping("index")
+    public String renderIndex(){return "index";}
 
     @RequestMapping("data/logout")
     @ResponseBody

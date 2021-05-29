@@ -1,10 +1,10 @@
 package com.example.register.model;
 
+import javafx.geometry.Pos;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 @Entity
@@ -23,6 +23,14 @@ public class PostInfo {
     @OneToMany(targetEntity = LikedInfo.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "postId")
     private List<LikedInfo> likedInfos;
+
+    @ManyToOne(targetEntity = Foodtag.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id")
+    private Foodtag foodtag;
+
+    @OneToMany(targetEntity = Media.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id")
+    private List<Media> medias;
 
     public int getnId() {
         return nId;
@@ -58,5 +66,19 @@ public class PostInfo {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Post getPost(){
+        Post post = new Post();
+        post.setId(nId);
+        post.setLikedNum(likedInfos.size());
+        post.setTag(foodtag.getName());
+        post.setContent(content);
+        List<String> paths = new ArrayList<String>();
+        for(int i=0;i<medias.size();i++){
+            paths.add(medias.get(i).getPath());
+        }
+        post.setMedias(paths);
+        return post;
     }
 }

@@ -5,78 +5,10 @@
     <title>Title</title>
 </head>
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
-<script src="js/post.js"></script>
 <body>
     <div id="postArea">
     </div>
-
 </body>
 </html>
-<script>
-
-    var searchParams = new URLSearchParams(new URL(location.href).search);
-    const uid = Number(searchParams.get('uid'));
-    const divPostArea = $("#postArea");
-    $.ajax({
-        url:"/data/login",
-        type:"post",
-        data:{"uid":uid},
-        success:function(res){
-        }
-        });
-        
-    window.onbeforeunload =  function (){
-        $.ajax({
-        url:"/data/logout",
-        type:"post",
-        data:{"uid":uid},
-        success:function(res){
-        }
-    })
-    };
-
-    $.ajax(
-        {
-            url:"/post/surf",
-            type:"post",
-            data:{},
-            success:surf
-        }
-    )
-
-    function approve(postId){
-        $.ajax(
-            {
-                url:'food/liked',
-                type:"post",
-                data:{"postId":postId, "uid": uid},
-                success: function (res){
-                    console.log("success");
-                }
-            }
-        )
-    }
-
-    function getLikeNum(postId){
-        var num;
-        $.ajax(
-            {
-                url:'post/LikeNum',
-                data:{"postId":postId},
-                success: function(res){
-                    num = res;
-                }
-            }
-        )
-        return num;
-    }
-    
-    function surf(res){
-        postArea = new PostArea(divPostArea);
-        for(var i=0;i<res.length;i++){
-            postArea.addPost(res[i]);
-        }
-        divPostArea.append(postArea.render());
-    } 
-</script>
+<script src="js/surf.js"></script>
 

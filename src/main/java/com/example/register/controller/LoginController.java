@@ -14,7 +14,7 @@ public class LoginController{
     @Autowired protected UserRepository userRepository;
 
     @GetMapping("login")
-    public String renderLogin(){return "login";}
+    public String renderLogin(){return "sign-in";}
 
     @RequestMapping(value = "login/submit")
     @ResponseBody

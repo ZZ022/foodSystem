@@ -14,23 +14,24 @@ public class RegisterController {
 
     @Autowired private UserRepository userRepository;
 
-    @GetMapping(value = "register")
+    @GetMapping(value = "sign-up")
     public String renderRegister(){
-        return "register";
+        return "sign-up";
     }
 
     @RequestMapping(value = "register/submit")
     @ResponseBody
-    public String register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password){
+    public int register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password){
+
         User user = new User();
         System.out.println(userRepository);
         if(userRepository.existsByName(username)){
-            return "用户名已存在";
+            return -1;
         }
         user.setPassword(password);
         user.setName(username);
         userRepository.save(user);
-        return "注册成功";
+        return user.getId();
     }
 
 }

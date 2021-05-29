@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <link rel="icon" type="image/png" href="img/fav.png">
+      <title>舌尖·个人主页</title>
+      <!-- Slick Slider -->
+      <link rel="stylesheet" type="text/css" href="vendor/slick/slick.min.css"/>
+      <link rel="stylesheet" type="text/css" href="vendor/slick/slick-theme.min.css"/>
+      <!-- Feather Icon-->
+      <link href="vendor/icons/feather.css" rel="stylesheet" type="text/css">
+      <!-- Bootstrap core CSS -->
+      <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+      <!-- Custom styles for this template -->
+      <link href="css/style.css" rel="stylesheet">
+   </head>
+   <body>
+      <!-- 最上面的导航框 -->
+      <nav class="navbar navbar-expand navbar-dark bg-dark osahan-nav-top p-0">
+         <div class="container">
+
+            <!-- 点击logo刷新主页 -->
+            <a class="navbar-brand mr-2" href="index.html"><img src="img/logo.png" alt=""> 
+            </a>
+            <!-- 搜索框 -->
+            <form class="d-none d-sm-inline-block form-inline mr-auto my-2 my-md-0 mw-100 navbar-search">
+               <div class="input-group">
+                  <input type="text" class="form-control shadow-none border-0" placeholder="搜索用户、美食..." aria-label="Search" aria-describedby="basic-addon2">
+                  <div class="input-group-append">
+                     <button class="btn" type="button">
+                     <i class="feather-search"></i>
+                     </button>
+                  </div>
+               </div>
+            </form>
+
+            <ul class="navbar-nav ml-auto d-flex align-items-center">
+               <li class="nav-item dropdown no-arrow d-sm-none">
+                  <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="feather-search mr-2"></i>
+                  </a>
+                  <!-- Dropdown - Messages -->
+                  <div class="dropdown-menu dropdown-menu-right p-3 shadow-sm animated--grow-in" aria-labelledby="searchDropdown">
+                     <form class="form-inline mr-auto w-100 navbar-search">
+                        <div class="input-group">
+                           <input type="text" class="form-control border-0 shadow-none" placeholder="搜索用户、美食..." aria-label="Search" aria-describedby="basic-addon2">
+                           <div class="input-group-append">
+                              <button class="btn" type="button">
+                              <i class="feather-search"></i>
+                              </button>
+                           </div>
+                        </div>
+                     </form>
+                  </div>
+               </li>
+               <!-- 故事地图按钮 -->
+               <li class="nav-item">
+                  <a class="nav-link" href="jobs.html"><i class="feather-briefcase mr-2"></i><span class="d-none d-lg-inline">故事地图</span></a>
+               </li>
+                <!-- 美食文化差异按钮 -->
+               <li class="nav-item">
+                  <a class="nav-link" href="connection.html"><i class="feather-users mr-2"></i><span class="d-none d-lg-inline">饮食文化差异</span></a>
+               </li>
+                <!-- 明星美食按钮 -->
+               <li class="nav-item dropdown mr-2">
+                  <a class="nav-link dropdown-toggle pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="feather-file-text mr-2"></i><span class="d-none d-lg-inline">明星美食</span>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right shadow-sm">
+                     <a class="dropdown-item" href="jobs.html"><i class="feather-briefcase mr-1"></i> Jobs</a>
+                     <a class="dropdown-item" href="profile.html"><i class="feather-user mr-1"></i> Profile</a>
+                     <a class="dropdown-item" href="connection.html"><i class="feather-users mr-1"></i> Connection</a>
+                     <a class="dropdown-item" href="company-profile.html"><i class="feather-user-plus mr-1"></i> Company Profile</a>
+                     <a class="dropdown-item" href="job-profile.html"><i class="feather-globe mr-1"></i> Job Profile</a>
+                  </div>
+               </li>
+
+
+               <!-- 消息中心 -->
+               <li class="nav-item dropdown no-arrow mx-1 osahan-list-dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     <i class="feather-message-square"></i>
+                     <!-- 未读消息数 -->
+                     <span class="badge badge-danger badge-counter">8</span>
+                  </a>
+                  <!-- 其他部分 -->
+                  <div class="dropdown-list dropdown-menu dropdown-menu-right shadow-sm">
+                     <h6 class="dropdown-header">消息中心</h6>
+                     <!--具体消息内容1-->
+                     <a class="dropdown-item d-flex align-items-center" href="#">
+                        <div class="dropdown-list-image mr-3">
+                           <img class="rounded-circle" src="img/p1.png" alt="">
+                           <div class="status-indicator bg-success"></div>
+                        </div>
+                        <div class="font-weight-bold overflow-hidden">
+                           <div class="small text-gray-500">小明  刚刚</div>
+                           <div class="text-truncate">今天晚上一起去尝尝？</div>
+                        </div>
+                     </a>
+                     <!--具体消息内容2-->
+                     <a class="dropdown-item d-flex align-items-center" href="#">
+                        <div class="dropdown-list-image mr-3">
+                           <img class="rounded-circle" src="img/p2.png" alt="">
+                           <div class="status-indicator"></div>
+                        </div>
+                        <div class="overflow-hidden">
+                           <div class="small text-gray-500">小红  两分钟前</div>
+                           <div class="text-truncate">那家粉好吃吗</div>
+                        </div>
+                     </a>
+                     <!--具体消息内容3-->
+                     <a class="dropdown-item d-flex align-items-center" href="#">
+                        <div class="dropdown-list-image mr-3">
+                           <img class="rounded-circle" src="img/p3.png" alt="">
+                           <div class="status-indicator bg-warning"></div>
+                        </div>
+                        <div class="overflow-hidden">
+                           <div class="small text-gray-500">小亮  16:04</div>
+                           <div class="text-truncate">你不来我也不去了</div>
+                        </div>
+                     </a>
+                     <!--具体消息内容4-->
+                     <a class="dropdown-item d-flex align-items-center" href="#">
+                        <div class="dropdown-list-image mr-3">
+                           <img class="rounded-circle" src="img/p4.png" alt="">
+                           <div class="status-indicator bg-success"></div>
+                        </div>
+                        <div class="overflow-hidden">
+                           <div class="small text-gray-500">佳佳  5月21日18:24</div>
+                           <div class="text-truncate">快回消息！</div>
+                        </div>
+                     </a>
+                     <!--更多消息-->
+                     <a class="dropdown-item text-center small text-gray-500" href="#">更多消息</a>
+                  </div>
+               </li>
+
+               <!-- 系统提醒 -->
+               <li class="nav-item dropdown no-arrow mx-1 osahan-list-dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     <i class="feather-bell"></i>
+                     <!-- 未读数目 -->
+                     <span class="badge badge-info badge-counter">6</span>
+                  </a>
+                  <!-- 其他部分 -->
+                  <div class="dropdown-list dropdown-menu dropdown-menu-right shadow-sm">
+                     <h6 class="dropdown-header">
+                        系统提醒
+                     </h6>
+                     <!-- 具体提醒内容1 -->
+                     <a class="dropdown-item d-flex align-items-center" href="#">
+                        <div class="mr-3">
+                           <div class="icon-circle bg-primary">
+                              <i class="feather-download-cloud text-white"></i>
+                           </div>
+                        </div>
+                        <div>
+                           <div class="small text-gray-500">5月6日20:05</div>
+                           <span class="font-weight-bold">故事地图更新了，快来看看吧！</span>
+                        </div>
+                     </a>
+                     <!-- 具体提醒内容2 -->
+                     <a class="dropdown-item d-flex align-items-center" href="#">
+                        <div class="mr-3">
+                           <div class="icon-circle bg-success">
+                              <i class="feather-edit text-white"></i>
+                           </div>
+                        </div>
+                        <div>
+                           <div class="small text-gray-500">4月26日9:23</div>
+                            系统更新提醒
+                        </div>
+                     </a>
+                     <!-- 具体提醒内容3 -->
+                     <a class="dropdown-item d-flex align-items-center" href="#">
+                        <div class="mr-3">
+                           <div class="icon-circle bg-warning">
+                              <i class="feather-folder text-white"></i>
+                           </div>
+                        </div>
+                        <div>
+                           <div class="small text-gray-500">4月6日15：46</div>
+                           你有一个新礼物请查收~
+                        </div>
+                     </a>
+                     <!-- 更多提醒 -->
+                     <a class="dropdown-item text-center small text-gray-500" href="#">更多提醒</a>
+                  </div>
+               </li>
+
+               <!-- 个人中心 -->
+               <li class="nav-item dropdown no-arrow ml-1 osahan-profile-dropdown">
+                  <a class="nav-link dropdown-toggle pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <img class="img-profile rounded-circle" src="img/p13.png">
+                  </a>
+                  <!-- Dropdown - User Information -->
+                  <div class="dropdown-menu dropdown-menu-right shadow-sm">
+                     <div class="p-3 d-flex align-items-center">
+                        <div class="dropdown-list-image mr-3">
+                           <img class="rounded-circle" src="img/user.png" alt="">
+                           <div class="status-indicator bg-success"></div>
+                        </div>
+                        <div class="font-weight-bold">
+                           <div class="text-truncate">暴躁吃货</div>
+                           <div class="small text-gray-500">我天天就想吃吃不胖~</div>
+                        </div>
+                     </div>
+                     <div class="dropdown-divider"></div>
+                     <a class="dropdown-item" href="profile.html"><i class="feather-user mr-1"></i> 个人主页</a>
+                     <a class="dropdown-item" href="sign-in.html"><i class="feather-log-out mr-1"></i> 退出登录</a>
+                  </div>
+               </li>
+            </ul>
+         </div>
+      </nav>
+
+
+      <!-- 下面部分 -->
+      <div class="py-4">
+         <div class="container">
+            <div class="row">
+               <!-- 左边 -->
+               <aside class="col col-xl-3 order-xl-1 col-lg-12 order-lg-1 col-12">
+                  <!-- 个人主页-->
+                  <div class="box mb-3 shadow-sm border rounded bg-white profile-box text-center">
+                     <div class="py-4 px-3 border-bottom">
+                        <img src="img/p13.png" class="img-fluid mt-2 rounded-circle" alt="Responsive image">
+                        <h5 class="font-weight-bold text-dark mb-1 mt-4">暴躁吃货</h5>
+                        <p class="mb-0 text-muted">我天天就想吃吃不胖~</p>
+                     </div>
+                     <div class="d-flex">
+                        <div class="col-6 border-right p-3">
+                           <h6 class="font-weight-bold text-dark mb-1">358</h6>
+                           <p class="mb-0 text-black-50 small">关注</p>
+                        </div>
+                        <div class="col-6 p-3">
+                           <h6 class="font-weight-bold text-dark mb-1">85</h6>
+                           <p class="mb-0 text-black-50 small">粉丝</p>
+                        </div>
+                     </div>
+                     <div class="overflow-hidden border-top">
+                        <a class="font-weight-bold p-3 d-block" href="sign-in.html"> 退出登录 </a>
+                     </div>
+                  </div>
+
+                  <!-- 热度统计-->
+                  <div class="box mb-3 shadow-sm rounded bg-white view-box overflow-hidden">
+                     <div class="box-title border-bottom p-3">
+                        <h6 class="m-0">热度统计</h6>
+                     </div>
+                     <div class="d-flex text-center">
+                        <div class="col-6 border-right py-4 px-2">
+                           <h5 class="font-weight-bold text-info mb-1">08 <i class="feather-bar-chart-2"></i></h5>
+                           <p class="mb-0 text-black-50 small">最近一周</p>
+                        </div>
+                        <div class="col-6 py-4 px-2">
+                           <h5 class="font-weight-bold text-success mb-1">+ 43% <i class="feather-bar-chart"></i></h5>
+                           <p class="mb-0 text-black-50 small">周增长</p>
+                        </div>
+                     </div>
+                     <div class="overflow-hidden border-top text-center">
+                        <img src="img/chart.png" class="img-fluid" alt="Responsive image">
+                     </div>
+                  </div>
+                  <!-- 热门美食专区/发布美食TAG-->
+                  <div class="box shadow-sm mb-3 rounded bg-white ads-box text-center">
+                     <img src="img/job1.png" class="img-fluid" alt="Responsive image">
+                     <div class="p-3 border-bottom">
+                        <a class="font-weight-bold text-dark" href="profile.html">美食专区</a>
+                        <p class="mb-0 text-muted">点击进入</p>
+                     </div>
+                     <div class="p-3">
+                        <button type="button" class="btn btn-outline-primary pl-4 pr-4"> 创建美食TAG </button>
+                     </div>
+                  </div>
+
+               </aside>
+               <!-- 主页面 -->
+               <main class="col col-xl-6 order-xl-2 col-lg-12 order-lg-2 col-md-12 col-sm-12 col-12">
+                  <!-- 关于我 -->
+                  <div class="box shadow-sm border rounded bg-white mb-3">
+                     <div class="box-title border-bottom p-3">
+                        <h6 class="m-0">关于我</h6>
+                     </div>
+                     <div class="box-body p-3">
+                        <p>我最喜欢吃东西了，欢迎任何喜欢中国美食的人和我一起探讨~
+                        </p>
+                     </div>
+                  </div>
+                  <!-- 我的帖子 -->
+                  <div class="box shadow-sm border rounded bg-white mb-3">
+                     <div class="box-title border-bottom p-3">
+                        <h6 class="m-0">我的帖子</h6>
+                     </div>
+                     <!-- <div class="box-body p-3 border-bottom">
+                        <div class="d-flex align-items-top job-item-header pb-2">
+                           <div class="mr-2">
+                              <h6 class="font-weight-bold text-dark mb-0">Web designer</h6>
+                              <div class="text-truncate text-primary">Spotify Inc.</div>
+                              <div class="small text-gray-500">Oct 2020 - Present (4 year 7 month) </div>
+                           </div>
+                           <img class="img-fluid ml-auto mb-auto" src="img/l3.png" alt="">
+                        </div>
+                        <p class="mb-0">Find the most qualified people in the most unexpected places. Information for applicants to consider when applying for local positions. </p>
+                     </div>
+                     <div class="box-body p-3 border-bottom">
+                        <div class="d-flex align-items-top job-item-header pb-2">
+                           <div class="mr-2">
+                              <h6 class="font-weight-bold text-dark mb-0">Cloud Software Engineer</h6>
+                              <div class="text-truncate text-primary">Spotify Inc.</div>
+                              <div class="small text-gray-500">Oct 2020 - Present (4 year 7 month) </div>
+                           </div>
+                           <img class="img-fluid ml-auto mb-auto" src="img/l6.png" alt="">
+                        </div>
+                        <p class="mb-0">Find the most qualified people in the most unexpected places. Information for.. </p>
+                     </div>
+                     <div class="box-body p-3">
+                        <div class="d-flex align-items-top job-item-header pb-2">
+                           <div class="mr-2">
+                              <h6 class="font-weight-bold text-dark mb-0">UI/UX designer</h6>
+                              <div class="text-truncate text-primary">Behance</div>
+                              <div class="small text-gray-500">Oct 2020 - Present (4 year 7 month) </div>
+                           </div>
+                           <img class="img-fluid ml-auto mb-auto" src="img/l2.png" alt="">
+                        </div>
+                        <p class="mb-0">Wualified people in the most unexpected places. Information for applicants to consider when applying for local positions. The largest community on the web to find and list jobs that aren't restricted by commutes or a specific location.
+                        </p>
+                     </div> -->
+                  
+                     <!-- 第一个帖子 -->
+                     <div class="box shadow-sm border rounded bg-white mb-3 osahan-post">
+                        <div class="p-3 d-flex align-items-center border-bottom osahan-post-header">
+                           <div class="dropdown-list-image mr-3">
+                              <img class="rounded-circle" src="img/p13.png" alt="">
+                              <div class="status-indicator bg-success"></div>
+                           </div>
+                           <div class="font-weight-bold">
+                              <div class="text-truncate">暴躁吃货</div>
+                              <div class="small text-gray-500">我天天就想吃吃不胖~</div>
+                           </div>
+                           <span class="ml-auto small">3 小时前</span>
+                        </div>
+                        <div class="p-3 border-bottom osahan-post-body">
+                           <p class="mb-0">刀削面入口外滑内筋，软而不粘，越嚼越香，刀削面的调料也是多种多样的，有番茄酱、肉炸酱、羊肉汤、金针木耳鸡蛋打卤等。它同武汉热干面、北京炸酱面、河南烩面、四川担担面同称为五大面食名品，享有盛誉。
+                           <a href="#">#陕西刀削面</a></p>
+                        </div>
+                        <div class="p-3 border-bottom osahan-post-footer">
+                           <a href="#" class="mr-3 text-secondary"><i class="feather-heart text-danger"></i> 16</a>
+                           <a href="#" class="mr-3 text-secondary"><i class="feather-message-square"></i>0</a>
+                           <a href="#" class="mr-3 text-secondary"><i class="feather-share-2"></i>2</a>
+                        </div>
+                        <!-- <div class="p-3">
+                           <button type="button" class="btn btn-outline-primary btn-sm mr-1">Awesome!!</button>
+                           <button type="button" class="btn btn-light btn-sm mr-1">😍</button>
+                           <button type="button" class="btn btn-outline-secondary btn-sm mr-1">Whats it about?</button>
+                           <button type="button" class="btn btn-outline-secondary btn-sm mr-1">Oooo Great Wow</button>
+                        </div> -->
+                     </div>
+                     <!-- 第二个帖子 -->
+                     <div class="box shadow-sm border rounded bg-white mb-3 osahan-post">
+                        <div class="p-3 d-flex align-items-center border-bottom osahan-post-header">
+                           <div class="dropdown-list-image mr-3">
+                              <img class="rounded-circle" src="img/p13.png" alt="">
+                              <div class="status-indicator bg-success"></div>
+                           </div>
+                           <div class="font-weight-bold">
+                              <div class="text-truncate">暴躁吃货</div>
+                              <div class="small text-gray-500">我天天就想吃吃不胖~</div>
+                           </div>
+                           <span class="ml-auto small">3 小时前</span>
+                        </div>
+                        <div class="p-3 border-bottom osahan-post-body">
+                           <p class="mb-0">刀削面入口外滑内筋，软而不粘，越嚼越香，刀削面的调料也是多种多样的，有番茄酱、肉炸酱、羊肉汤、金针木耳鸡蛋打卤等。它同武汉热干面、北京炸酱面、河南烩面、四川担担面同称为五大面食名品，享有盛誉。
+                           <a href="#">#陕西刀削面</a></p>
+                        </div>
+                        <div class="p-3 border-bottom osahan-post-footer">
+                           <a href="#" class="mr-3 text-secondary"><i class="feather-heart text-danger"></i> 16</a>
+                           <a href="#" class="mr-3 text-secondary"><i class="feather-message-square"></i>0</a>
+                           <a href="#" class="mr-3 text-secondary"><i class="feather-share-2"></i>2</a>
+                        </div>
+                        <!-- <div class="p-3">
+                           <button type="button" class="btn btn-outline-primary btn-sm mr-1">Awesome!!</button>
+                           <button type="button" class="btn btn-light btn-sm mr-1">😍</button>
+                           <button type="button" class="btn btn-outline-secondary btn-sm mr-1">Whats it about?</button>
+                           <button type="button" class="btn btn-outline-secondary btn-sm mr-1">Oooo Great Wow</button>
+                        </div> -->
+                     </div>
+                     <!-- 第三个帖子 -->
+                     <div class="box mb-3 shadow-sm border rounded bg-white osahan-post">
+                        <div class="p-3 d-flex align-items-center border-bottom osahan-post-header">
+                           <div class="dropdown-list-image mr-3">
+                              <img class="rounded-circle" src="img/p13.png" alt="">
+                              <div class="status-indicator bg-success"></div>
+                           </div>
+                           <div class="font-weight-bold">
+                              <div class="text-truncate">暴躁吃货</div>
+                              <div class="small text-gray-500">我天天就想吃吃不胖~</div>
+                           </div>
+                           <span class="ml-auto small">5 小时前</span>
+                        </div>
+                        <div class="p-3 border-bottom osahan-post-body">
+                           <p>找到真爱了😍😎胡辣汤是中国北方早餐中常见的传统汤类名吃，用胡椒，辣椒，牛肉粒，骨汤，粉芡，细粉条，黄花菜，花生，木耳等制作而成。早上来一碗真的太爽了吧<a href="#">#胡辣汤
+                           </a></p>
+                           <img src="img/post1.png" class="img-fluid" alt="Responsive image">
+                        </div>
+                        <div class="p-3 border-bottom osahan-post-footer">
+                           <a href="#" class="mr-3 text-secondary"><i class="feather-heart text-danger"></i> 42</a>
+                           <a href="#" class="mr-3 text-secondary"><i class="feather-message-square"></i> 1</a>
+                           <a href="#" class="mr-3 text-secondary"><i class="feather-share-2"></i> 7</a>
+                        </div>
+                        <!-- 评论 -->
+                        <div class="p-3 d-flex align-items-top border-bottom osahan-post-comment">
+                           <div class="dropdown-list-image mr-3">
+                              <img class="rounded-circle" src="img/p7.png" alt="">
+                              <div class="status-indicator bg-success"></div>
+                           </div>
+                           <div class="font-weight-bold">
+                              <div class="text-truncate"> 金金的小肚肚 <span class="float-right small"> 2 分钟前</span></div>
+                              <div class="form-control border-0 p-0 shadow-none">我也超爱啊姐妹！！</div>
+                           </div>
+                        </div>
+                        <div class="p-3">
+                           <textarea placeholder="评论..." class="form-control border-0 p-0 shadow-none" rows="1"></textarea>
+                        </div>
+                     </div>
+                  
+                  
+                  
+                  </div>
+                  <!-- 没有用的部分 -->
+                  <!-- <div class="box shadow-sm border rounded bg-white mb-3">
+                     <div class="box-title border-bottom p-3">
+                        <h6 class="m-0">Education</h6>
+                     </div>
+                     <div class="box-body p-3 border-bottom">
+                        <div class="d-flex align-items-top job-item-header pb-2">
+                           <div class="mr-2">
+                              <h6 class="font-weight-bold text-dark mb-0">Stanford University</h6>
+                              <div class="text-truncate text-primary">Master’s programmes</div>
+                              <div class="small text-gray-500">Oct 2020 - Present (4 year 7 month) </div>
+                           </div>
+                           <img class="img-fluid ml-auto mb-auto" src="img/e1.png" alt="">
+                        </div>
+                        <p class="mb-0">Find the most qualified people in the most unexpected places. Information for applicants to consider when applying for local positions.</p>
+                     </div>
+                     <div class="box-body p-3">
+                        <div class="d-flex align-items-top job-item-header pb-2">
+                           <div class="mr-2">
+                              <h6 class="font-weight-bold text-dark mb-0">Harvard University</h6>
+                              <div class="text-truncate text-primary">Maths and science education</div>
+                              <div class="small text-gray-500">Oct 2020 - Present (4 year 7 month) </div>
+                           </div>
+                           <img class="img-fluid ml-auto mb-auto" src="img/e2.png" alt="">
+                        </div>
+                        <p class="mb-0">Wualified people in the most unexpected places. Information for applicants to consider when applying for local positions.</p>
+                     </div>
+                  </div> -->
+               </main>
+               <!-- 右边页面-->
+               <aside class="col col-xl-3 order-xl-3 col-lg-6 order-lg-3 col-md-6 col-sm-6 col-12">
+                  <!-- 热门帖子-->
+                  <div class="box shadow-sm border rounded bg-white mb-3">
+                     <div class="box-title border-bottom p-3">
+                        <h6 class="m-0">热门帖子</h6>
+                     </div>
+                     <div class="box-body p-3">
+                        <!-- 热门帖子1-->
+                        <div class="d-flex align-items-center osahan-post-header mb-3 people-list">
+                           <div class="dropdown-list-image mr-3">
+                              <img class="rounded-circle" src="img/p8.png" alt="">
+                              <div class="status-indicator bg-success"></div>
+                           </div>
+                           <div class="font-weight-bold mr-2">
+                              <div class="text-truncate">资深大吃货</div>
+                              <div class="small text-gray-500">广八路那家店真的绝了，色香味俱全</div>
+                           </div>
+                           <span class="ml-auto"><button type="button" class="btn btn-light btn-sm"><i class="feather-chevron-right"></i></button>
+                           </span>
+                        </div>
+                        <!-- 热门帖子2-->
+                        <div class="d-flex align-items-center osahan-post-header mb-3 people-list">
+                           <div class="dropdown-list-image mr-3">
+                              <img class="rounded-circle" src="img/p9.png" alt="">
+                              <div class="status-indicator bg-success"></div>
+                           </div>
+                           <div class="font-weight-bold mr-2">
+                              <div class="text-truncate">爱吃的美女</div>
+                              <div class="small text-gray-500">我的天，我这样天天吃居然也没吃胖</div>
+                           </div>
+                           <span class="ml-auto"><button type="button" class="btn btn-light btn-sm"><i class="feather-chevron-right"></i></button>
+                           </span>
+                        </div>
+                        <!-- 热门帖子3-->
+                        <div class="d-flex align-items-center osahan-post-header mb-3 people-list">
+                           <div class="dropdown-list-image mr-3">
+                              <img class="rounded-circle" src="img/p10.png" alt="">
+                              <div class="status-indicator bg-success"></div>
+                           </div>
+                           <div class="font-weight-bold mr-2">
+                              <div class="text-truncate">爱吃鱼</div>
+                              <div class="small text-gray-500">从来没吃过这么好吃的烤鱼</div>
+                           </div>
+                           <span class="ml-auto"><button type="button" class="btn btn-light btn-sm"><i class="feather-chevron-right"></i></button>
+                           </span>
+                        </div>
+                        <!-- 热门帖子4-->
+                        <div class="d-flex align-items-center osahan-post-header mb-3 people-list">
+                           <div class="dropdown-list-image mr-3">
+                              <img class="rounded-circle" src="img/p11.png" alt="">
+                              <div class="status-indicator bg-success"></div>
+                           </div>
+                           <div class="font-weight-bold mr-2">
+                              <div class="text-truncate">ooo</div>
+                              <div class="small text-gray-500">从小都在这一家面馆吃，居然涨价了</div>
+                           </div>
+                           <span class="ml-auto"><button type="button" class="btn btn-light btn-sm"><i class="feather-chevron-right"></i></button>
+                           </span>
+                        </div>
+                        <!-- 热门帖子5-->
+                        <div class="d-flex align-items-center osahan-post-header people-list">
+                           <div class="dropdown-list-image mr-3">
+                              <img class="rounded-circle" src="img/p12.png" alt="">
+                              <div class="status-indicator bg-success"></div>
+                           </div>
+                           <div class="font-weight-bold mr-2">
+                              <div class="text-truncate">哈哈还行</div>
+                              <div class="small text-gray-500">杭州有约吗，有吗有吗</div>
+                           </div>
+                           <span class="ml-auto"><button type="button" class="btn btn-light btn-sm"><i class="feather-chevron-right"></i></button>
+                           </span>
+                        </div>
+                     </div>
+                  </div>
+                  <!-- 可能感兴趣的美食-->
+                  <div class="box shadow-sm mb-3 rounded bg-white ads-box text-center overflow-hidden">
+                     <div class="box-title border-bottom p-3">
+                        <h6 class="m-0">可能感兴趣</h6>
+                     </div>
+                     <div class="shadow-sm border rounded bg-white job-item mb-3">
+                        <img src="img/ads1.png" class="img-fluid" alt="Responsive image">
+                        <div class="p-3 border-bottom">
+                        <h6 class="font-weight-bold text-gold">印度咖喱鸡</h6>
+                        </div>
+                     </div>
+                     <div class="shadow-sm border rounded bg-white job-item mb-3">
+                        <img src="img/ads1.png" class="img-fluid" alt="Responsive image">
+                        <div class="p-3 border-bottom">
+                        <h6 class="font-weight-bold text-gold">柳州螺蛳粉</h6>
+                        </div>
+                     </div>
+                     <div class="p-3">
+                        <button type="button" class="btn btn-outline-gold pl-4 pr-4">查看更多</button>
+                     </div>
+                  </div>
+                  <!--广告 -->
+                  <div class="box shadow-sm border rounded bg-white mb-3">
+                     <div class="box-title border-bottom p-3">
+                        <h6 class="m-0">广告</h6>
+                     </div>
+                     <div class="box-body p-3">
+                        <a href="job-profile.html">
+                           <div class="shadow-sm border rounded bg-white job-item mb-3">
+                              <div class="d-flex align-items-center p-3 job-item-header">
+                                 <div class="overflow-hidden mr-2">
+                                    <h6 class="font-weight-bold text-dark mb-0 text-truncate">正宗台湾阿姨奶茶</h6>
+                                    <div class="text-truncate text-primary">全球诚招试喝员</div>
+                                    <div class="small text-gray-500"><i class="feather-map-pin"></i> 中国, 台湾</div>
+                                 </div>
+                                 <img class="img-fluid ml-auto" src="img/l3.png" alt="">
+                              </div>
+                              <div class="d-flex align-items-center p-3 border-top border-bottom job-item-body">
+                                 <!-- <div class="overlap-rounded-circle">
+                                    <img class="rounded-circle shadow-sm" data-toggle="tooltip" data-placement="top" title="" src="img/p9.png" alt="" data-original-title="Sophia Lee">
+                                    <img class="rounded-circle shadow-sm" data-toggle="tooltip" data-placement="top" title="" src="img/p10.png" alt="" data-original-title="John Doe">
+                                    <img class="rounded-circle shadow-sm" data-toggle="tooltip" data-placement="top" title="" src="img/p11.png" alt="" data-original-title="Julia Cox">
+                                    <img class="rounded-circle shadow-sm" data-toggle="tooltip" data-placement="top" title="" src="img/p12.png" alt="" data-original-title="Robert Cook">
+                                 </div> 
+                                 <span class="font-weight-bold text-muted">18 connections</span>-->
+                                 <img src="img/ads1.png" class="img-fluid" alt="Responsive image">
+                              </div>
+                              <div class="p-3 job-item-footer">
+                                 <small class="text-gray-500"><i class="feather-clock"></i> 三天前发布</small>
+                              </div>
+                           </div>
+                        </a>
+
+                     </div>
+                  </div>
+               </aside>
+            </div>
+         </div>
+      </div>
+
+
+
+
+
+      <!-- Bootstrap core JavaScript -->
+      <script src="vendor/jquery/jquery.min.js"></script>
+      <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+      <!-- slick Slider JS-->
+      <script type="text/javascript" src="vendor/slick/slick.min.js"></script>
+      <!-- Custom scripts for all pages-->
+      <script src="js/osahan.js"></script>
+   </body>
+</html>

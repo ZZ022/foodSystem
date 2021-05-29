@@ -13,7 +13,7 @@
     <button id="favor">点赞</button>
 </body>
 <script>
-    var searchParams = new URLSearchParams(new URL(location.href).search);
+    const searchParams = new URLSearchParams(new URL(location.href).search);
     const uid = Number(searchParams.get('uid'));
     $.ajax({
         url:"/data/login",
