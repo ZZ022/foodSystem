@@ -49,7 +49,7 @@ public class PostController extends LoginController{
     }
 
 
-    @RequestMapping("post/submit")
+    @RequestMapping("data/submit")
     @ResponseBody
     public String submit(@RequestParam(value = "post") String post, @RequestParam(value = "uid") int userId){
         User user = userRepository.findById(userId);

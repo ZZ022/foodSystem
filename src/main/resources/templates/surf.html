@@ -5,6 +5,7 @@
     <title>Title</title>
 </head>
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+<script src="js/post.js"></script>
 <body>
     <div id="postArea">
     </div>
@@ -12,32 +13,10 @@
 </body>
 </html>
 <script>
-    String.prototype.format = function(args) {
-        if (arguments.length > 0) {
-            var result = this;
-            if (arguments.length == 1 && typeof(args) == "object") {
-            for (var key in args) {
-                var reg = new RegExp("({" + key + "})", "g");
-                result = result.replace(reg, args[key]);
-            }
-            } else {
-            for (var i = 0; i < arguments.length; i++) {
-                if (arguments[i] == undefined) {
-                return "";
-                } else {
-                var reg = new RegExp("({[" + i + "]})", "g");
-                result = result.replace(reg, arguments[i]);
-                }
-            }
-            }
-            return result;
-        } else {
-            return this;
-        }
-    }
 
     var searchParams = new URLSearchParams(new URL(location.href).search);
     const uid = Number(searchParams.get('uid'));
+    const divPostArea = $("#postArea");
     $.ajax({
         url:"/data/login",
         type:"post",
@@ -56,7 +35,6 @@
     })
     };
 
-    const divPostArea = $('#postArea')
     $.ajax(
         {
             url:"/post/surf",
@@ -94,23 +72,11 @@
     }
     
     function surf(res){
-        var innerhtml;
-        var template = " \
-            <div id = \"{0}}Id\"> \
-                {1} \
-                <br> \
-                date:{2}&nbsp;userId:{3}\
-                <br>\
-                <br>点赞数:{4}\
-                <button id=\"btn{0}\" onclick = approve({0})>点赞</button>\
-            </div>\
-            "
+        postArea = new PostArea(divPostArea);
         for(var i=0;i<res.length;i++){
-            let postId = res[i].nId;
-            let likenum = getLikeNum(postId);
-            innerhtml += template.format(postId, res[i].content, res[i].date, res[i].userId);
+            postArea.addPost(res[i]);
         }
-        divPostArea.append(innerhtml);
+        divPostArea.append(postArea.render());
     } 
 </script>
 

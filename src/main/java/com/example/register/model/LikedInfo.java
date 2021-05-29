@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name="LikedInfo")
+@Table(name="t_LikedInfo", uniqueConstraints = {@UniqueConstraint(columnNames = {"userId", "postId"})})
 public class LikedInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

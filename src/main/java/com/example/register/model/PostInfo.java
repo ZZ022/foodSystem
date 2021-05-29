@@ -22,7 +22,7 @@ public class PostInfo {
 
     @OneToMany(targetEntity = LikedInfo.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "postId")
-    List<PostInfo> LikedInfos;
+    private List<LikedInfo> likedInfos;
 
     public int getnId() {
         return nId;
@@ -40,8 +40,8 @@ public class PostInfo {
 
     public PostInfo(){};
 
-    public List<PostInfo> getLikedInfos() {
-        return LikedInfos;
+    public List<LikedInfo> getLikedInfos() {
+        return likedInfos;
     }
 
     public Date getDate() {

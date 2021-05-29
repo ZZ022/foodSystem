@@ -33,10 +33,11 @@
     };
     $('#postForm').submit(function(){
     $.ajax({
-        url:"/post/submit",
+        url:"/data/submit",
         type:"post",
         data:{"post":$('#post').val(),"uid":uid},
         success:function(res){
+            location.href="/food"
             console.log('success');
         }
     })

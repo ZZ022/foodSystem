@@ -30,6 +30,10 @@ public class User {
     @JoinColumn(name = "userId")
     List<PostInfo> postInfos;
 
+    @OneToMany(targetEntity = LikedInfo.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "userId")
+    List<LikedInfo> likedInfos;
+
 
     @Column(name = "password")
     private String password;
