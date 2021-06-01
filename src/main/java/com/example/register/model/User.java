@@ -27,11 +27,9 @@ public class User {
 
 
     @OneToMany(targetEntity = PostInfo.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "userId")
     List<PostInfo> postInfos;
 
     @OneToMany(targetEntity = LikedInfo.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "userId")
     List<LikedInfo> likedInfos;
 
 

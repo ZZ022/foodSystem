@@ -13,19 +13,22 @@ public class PostInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int nId;
-    @Column(name="userId")
-    private int userId;
+
+    @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "userId")
+    private User user;
+
     @Column(name="date")
     private Date date;
+
     @Column(name="content")
     private String content;
 
     @OneToMany(targetEntity = LikedInfo.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "postId")
     private List<LikedInfo> likedInfos;
 
     @ManyToOne(targetEntity = Foodtag.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "tagid")
     private Foodtag foodtag;
 
     @Column(name = "lat")
@@ -35,15 +38,14 @@ public class PostInfo {
     private float longtitude;
 
     @OneToMany(targetEntity = Media.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id")
     private List<Media> medias;
 
     public int getnId() {
         return nId;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
     public float getLon() {
@@ -62,11 +64,12 @@ public class PostInfo {
         return latitude;
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-    public PostInfo(User user, Date date, String content){
-        this.userId = user.getId();
-        this.date = date;
-        this.content = content;
+    public void setFoodtag(Foodtag foodtag) {
+        this.foodtag = foodtag;
     }
 
     public PostInfo(){};

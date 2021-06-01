@@ -1,5 +1,7 @@
 package com.example.register.model;
 
+import com.fasterxml.jackson.databind.node.POJONode;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,6 +14,9 @@ public class Media {
     @Column(name = "path")
     private String path;
 
+    @ManyToOne(targetEntity = PostInfo.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "postId")
+    PostInfo postInfo;
 
     public String getPath() {
         return path;
@@ -21,4 +26,7 @@ public class Media {
         this.path = path;
     }
 
+    public void setPostInfo(PostInfo postInfo) {
+        this.postInfo = postInfo;
+    }
 }
