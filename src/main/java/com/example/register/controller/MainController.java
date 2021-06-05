@@ -114,8 +114,16 @@ public class MainController extends LoginController{
                            @RequestParam(value = "content") String content){
         User user = userRepository.findById(userId);
         Foodtag foodTag = tagRepository.findByName(tag);
+        System.out.println(foodTag.getid());
         Date date = new Date(System.currentTimeMillis());
         PostInfo postInfo = new PostInfo();
+        postInfo.setDate(date);
+        postInfo.setFoodtag(foodTag);
+        postInfo.setUser(user);
+        postInfo.setContent(content);
+        postInfo.setLatitude(lat);
+        postInfo.setLongtitude(lng);
+        postInfoRepository.save(postInfo);
         for(int i=0;i<medias.length;i++){
             String sourcePath =  "E:\\课程\\大三下\\gis工程\\实习\\foodSystem\\src\\main\\resources\\";
             String path = "media\\"+postInfo.getnId() + "_" + i +'.';
@@ -128,6 +136,7 @@ public class MainController extends LoginController{
                 Media media = new Media();
                 media.setPostInfo(postInfo);
                 media.setPath(path);
+                System.out.println("saving media");
                 mediaRepository.save(media);
             }
             catch (Exception e){
@@ -135,13 +144,7 @@ public class MainController extends LoginController{
             }
 
         }
-        postInfo.setDate(date);
-        postInfo.setFoodtag(foodTag);
-        postInfo.setUser(user);
-        postInfo.setContent(content);
-        postInfo.setLatitude(lat);
-        postInfo.setLongtitude(lng);
-        postInfoRepository.save(postInfo);
+
         return true;
     }
 }

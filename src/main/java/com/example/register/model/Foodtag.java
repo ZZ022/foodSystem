@@ -10,11 +10,13 @@ public class Foodtag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
+    @Column(name = "city",nullable = false)
+    private String city;
+
     @OneToMany(targetEntity = PostInfo.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "nId")
     private List<PostInfo> postInfos;
 
     public void setName(String name) {
@@ -31,5 +33,13 @@ public class Foodtag {
 
     public List<PostInfo> getPostInfos() {
         return postInfos;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCity() {
+        return city;
     }
 }
