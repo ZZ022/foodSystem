@@ -201,20 +201,65 @@ public class MainController extends LoginController{
 
     @RequestMapping("data/search")
     @ResponseBody
-    public List<PostInfo> postsSerarch(@RequestParam(value = "content") String content){
+    public PostFetch postsSerarch(@RequestParam(value = "content") String content){
         User user = userRepository.findByName(content);
+        System.out.println(user);
         Foodtag tag = tagRepository.findByName(content);
-        List<PostInfo> postsRel = new ArrayList<>();
+        System.out.println(tag);
         if(user!=null){
-            postsRel = postInfoRepository.findAllByUser(user);
+            List<PostInfo> posts=postInfoRepository.findAllByUserOrderByDateDesc(user);
+            PostFetch res = new PostFetch();
+            if(100>=posts.size()){
+                List<Post> postFetches = new ArrayList<>();
+                for(int i=0;i<posts.size();i++){
+                    postFetches.add(posts.get(i).getPost());
+                }
+                res.setPosts(postFetches);
+                res.setEnd(true);
+                System.out.println(res);
+                return res;
+            }
+            else {
+                List<Post> postFetches = new ArrayList<>();
+                for(int i=0;i<100;i++){
+                    postFetches.add(posts.get(i).getPost());
+                }
+                res.setPosts(postFetches);
+                res.setEnd(false);
+                System.out.println(res);
+                return res;
+            }
         }
         else if(tag != null){
-            System.out.println("I'm here");
-            postsRel = postInfoRepository.findAllByFoodtag(tag);
+            List<PostInfo> posts=postInfoRepository.findAllByFoodtagOrderByDateDesc(tag);
+            PostFetch res = new PostFetch();
+            if(100>=posts.size()){
+                List<Post> postFetches = new ArrayList<>();
+                for(int i=0;i<posts.size();i++){
+                    postFetches.add(posts.get(i).getPost());
+                }
+                res.setPosts(postFetches);
+                res.setEnd(true);
+                System.out.println(res);
+                return res;
+            }
+            else {
+                List<Post> postFetches = new ArrayList<>();
+                for(int i=0;i<100;i++){
+                    postFetches.add(posts.get(i).getPost());
+                }
+                res.setPosts(postFetches);
+                res.setEnd(false);
+                System.out.println(res);
+                return res;
+            }
         }
-        int count = postsRel.size();
-        System.out.println(count);
-        return postsRel;
+        else {
+            PostFetch res = new PostFetch();
+            res.setPosts(new ArrayList<Post>());
+            res.setEnd(false);
+            return res;
+        }
     }
 
 

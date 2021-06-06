@@ -2,10 +2,10 @@ const searchParams = new URLSearchParams(new URL(location.href).search);
 const uid = Number(searchParams.get('uid'));
 const btnAddTag = $('#addTag');
 const selectTag = "selectTag"
-var isAddTag;
-var isAddPos;
+var postNum = 100;
+var postSet = [];
 var isPostEnd;
-var postNum=3;
+var maxPostNum=3;
 var postIdx = 0;
 var imgSrc = [];
 var imgFile = [];
@@ -55,7 +55,6 @@ function  login(){
         data:{"uid":uid},
     })
 }
-
 
 //登出
 function logout(){
@@ -148,19 +147,9 @@ function searchByUserOrTag(content) {
     )
 }
 
-// 点赞操作
-function likedAdd() {
-    $.ajax({
-        url:"data/likedAdd",
-        type:"post",
-
-    })
-
-}
-
 
 //向后台获取帖子信息，s为开始位置，n为请求帖子数
-function fetchPost(s,n, postArea){
+function fetchPost(s,n){
     $.ajax({
         url:"/data/fetchPost",
         type:"post",
@@ -170,22 +159,24 @@ function fetchPost(s,n, postArea){
             // console.log(res);
             // res = eval("(" + res + ")");
             // console.log(typeof res);
+            postSet = res.posts;
             isPostEnd = res.end;
-            for(var i=0;i<res.posts.length;i++){
-                $('#{0}'.format(postArea)).append(showPostHtml(res.posts[i]));
-            }
+            postNum = res.posts.length;
         }
     })
 }
 
 function viewMore(){
-    fetchPost(postIdx, postNum, 'postArea2');
-    if(!isPostEnd){
-        $('#postArea2').append(
-            '<button id="btnMorePost" onclick="viewMore()">浏览更多</button>'
-        );
-        postIdx += postNum;
-        console.log(postIdx);
+    if(postIdx<postNum){
+        for(var i=0;i<maxPostNum;i++){
+            $('#{0}'.format('postArea2')).append(showPostHtml(postSet[i+postIdx]));
+        }
+        postIdx += maxPostNum;
+        if(postIdx<postNum){
+            $('#postArea2').append(
+                '<button id="btnMorePost" onclick="viewMore()">浏览更多</button>'
+            );
+        }
     }
 }
 
@@ -210,12 +201,12 @@ function showPostHtml(post){
         "                     </div>\n" +
         "{4}\n" +
         "                     <div class=\"p-3 border-bottom osahan-post-footer\">\n" +
-        "                        <a href=\"#\" class=\"mr-3 text-secondary\"><i class=\"feather-heart text-danger\"></i> 16</a>\n" +
-        "                        <a href=\"#\" class=\"mr-3 text-secondary\"><i class=\"feather-message-square\"></i>0</a>\n" +
-        "                        <a href=\"#\" class=\"mr-3 text-secondary\"><i class=\"feather-share-2\"></i>2</a>\n" +
+        "                        <a  class=\"mr-3 text-secondary\"><i class=\"feather-heart text-danger\" onclick=\"Like({5})\" id='like{5}'>{6}</i></a>\n" +
+        "                        <a  class=\"mr-3 text-secondary\"><i class=\"feather-message-square\"></i>0</a>\n" +
+        "                        <a  class=\"mr-3 text-secondary\"><i class=\"feather-share-2\"></i>2</a>\n" +
         "                     </div>"
-    console.log(htmlTemplate.format(post.username, post.date, post.content, post.tag,  showMediaHtml(post.medias), post.id));
-    return htmlTemplate.format(post.username, post.date, post.content, post.tag,  showMediaHtml(post.medias), post.id);
+    // console.log(htmlTemplate.format(post.username, post.date, post.content, post.tag,  showMediaHtml(post.medias), post.id));
+    return htmlTemplate.format(post.username, post.date, post.content, post.tag,  showMediaHtml(post.medias), post.id, updatedCount(post.id));
 }
 
 //显示媒体的html
@@ -238,6 +229,19 @@ function showMediaHtml(medias){
 
 }
 
+function Like(postId){
+    var flag = saveLikedToDB(postId,uid);
+    var numUpdated;
+    if(flag !== false){
+        // 实现根据postid获取更新后的点赞数
+        numUpdated = updatedCount(postId);
+        console.log(numUpdated);
+        document.getElementById("like"+postId).innerText = numUpdated.toString();
+    }
+    else {
+        alert("服务器异常，点赞失败！");
+    }
+}
 
 
 // 搜索框，实现根据content搜索用户表-->美食tag表，并返回相应的帖子显示
@@ -247,8 +251,10 @@ function searchByUserOrTag(content) {
             url:"data/search",
             type:"post",
             data:{"content":content},
+            async:false,
             success:function(res){
                 console.log(res);
+                postSet = res.posts;
                 // 考虑怎样将帖子动态链接到页面中
             }
         }
@@ -257,6 +263,7 @@ function searchByUserOrTag(content) {
 
 // 实现将该点赞数据存入数据库的动作
 function saveLikedToDB(postId,userId){
+    console.log('saving');
     $.ajax({
         url:"api/likedAdd",
         type:"post",
@@ -273,17 +280,36 @@ function saveLikedToDB(postId,userId){
 
 // 实现根据postid获取更新后的点赞数
 function updatedCount(postId){
+    var num;
     $.ajax({
         url:"api/likedUpdated",
         type:"post",
         data:{
             "postId":postId
         },
+        async:false,
         success:function (res) {
             console.log("获取的更新值"+res);
-            return res;
+            num = res;
         }
     })
+    return num;
+}
+
+function renderPost(){
+    $('#{0}'.format('postArea1')).append(showPostHtml(postSet[0]));
+    postIdx = 1;
+    if(postIdx<postNum){
+        for(var i=0;i<maxPostNum;i++){
+            $('#{0}'.format('postArea2')).append(showPostHtml(postSet[i+postIdx]));
+        }
+        postIdx += maxPostNum;
+        if(postIdx<postNum){
+            $('#postArea2').append(
+                '<button id="btnMorePost" onclick="viewMore()">浏览更多</button>'
+            );
+        }
+    }
 }
 
 //-------------------------主程序区-------------------
@@ -312,51 +338,44 @@ $('#iptAddImage').on('change', function(){
         imgFile.push(fileList[i]);
     }
 })
-fetchPost(0,1, 'postArea1');
-postIdx = 1;
-// console.log(isPostEnd)
-if(!isPostEnd){
-    fetchPost(postIdx, postNum, 'postArea2');
-    if(!isPostEnd){
-        $('#postArea2').append(
-            '<button id="btnMorePost" onclick="viewMore()">浏览更多</button>'
-        );
-        postIdx += postNum;
-    }
-}
-fetchPost(0,1);
-if(!isPostEnd){
-    fetchPost(postIdx, postNum, 'postArea2');
-    if(!isPostEnd){
-        $('#postArea2').append(
-            '<button id="btnMorePost" onclick="viewMore()">浏览更多</button>'
-        );
-        postIdx += postNum;
-    }
-}
+fetchPost(0, postNum);
+renderPost();
+// fetchPost(0,1);
+// if(!isPostEnd){
+//     fetchPost(postIdx, postNum, 'postArea2');
+//     if(!isPostEnd){
+//         $('#postArea2').append(
+//             '<button id="btnMorePost" onclick="viewMore()">浏览更多</button>'
+//         );
+//         postIdx += postNum;
+//     }
+// }
 // 搜索按钮
-$('#search').click(function () {
-    var content = document.getElementById("search_input").value;
+$('#btnSearch').click(function () {
+    var content = $('#search_input').val();
+    console.log(content);
     // 用户优先
-    postsRel = searchByUserOrTag(content);
-
+    searchByUserOrTag(content);
+    $('#postArea1').html('');
+    $('#postArea2').html('');
+    renderPost();
 })
 
 //点赞,获取postId，userId和目前postId的点赞个数
-$('#like').click(function () {
-    // var likeNums = document.getElementById("like").innerText;
-    // 模拟从前端元素获取到的用户和帖子编号
-    var postId = 1;
-    var userId = uid;
-    // 实现将该点赞数据存入数据库的动作
-    var flag = saveLikedToDB(postId,userId);
-    if(flag !== false){
-        // 实现根据postid获取更新后的点赞数
-        var numUpdated = updatedCount(postId);
-    }
-    else {
-        alert("服务器异常，点赞失败！");
-    }
-    document.getElementById("like").innerText = numUpdated.toString();
-
-})
+// $('#like').click(function () {
+//     // var likeNums = document.getElementById("like").innerText;
+//     // 模拟从前端元素获取到的用户和帖子编号
+//     var postId = 1;
+//     var userId = uid;
+//     // 实现将该点赞数据存入数据库的动作
+//     var flag = saveLikedToDB(postId,userId);
+//     if(flag !== false){
+//         // 实现根据postid获取更新后的点赞数
+//         var numUpdated = updatedCount(postId);
+//     }
+//     else {
+//         alert("服务器异常，点赞失败！");
+//     }
+//     document.getElementById("like").innerText = numUpdated.toString();
+//
+// })
