@@ -1,6 +1,7 @@
 package com.example.register.model;
 
 import javafx.geometry.Pos;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.util.*;
 @Entity
 @Table(name="T_postInfo", indexes = {@Index(columnList = "date")})
 public class PostInfo {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int nId;
@@ -38,6 +40,7 @@ public class PostInfo {
     private float longtitude;
 
     @OneToMany(targetEntity = Media.class, cascade = CascadeType.ALL)
+    @JoinColumn
     private List<Media> medias;
 
     public int getnId() {
@@ -94,6 +97,10 @@ public class PostInfo {
         this.content = content;
     }
 
+    public void setMedias(List<Media> medias) {
+        this.medias = medias;
+    }
+
     public Post getPost(){
         Post post = new Post();
         post.setId(nId);
@@ -102,10 +109,15 @@ public class PostInfo {
         post.setContent(content);
         post.setLat(latitude);
         post.setLon(longtitude);
-        List<String> paths = new ArrayList<String>();
+        post.setUsername(user.getName());
+        List<MediaFetch> paths = new ArrayList<MediaFetch>();
         for(int i=0;i<medias.size();i++){
-            paths.add(medias.get(i).getPath());
+            MediaFetch mediaFetch = new MediaFetch();
+            mediaFetch.setMedia(medias.get(i).getPath());
+            mediaFetch.setPhoto(medias.get(i).isPhoto());
+            paths.add(mediaFetch);
         }
+        post.setDate(date);
         post.setMedias(paths);
         return post;
     }

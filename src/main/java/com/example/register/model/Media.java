@@ -14,6 +14,9 @@ public class Media {
     @Column(name = "path")
     private String path;
 
+    @Column(name = "isPhoto")
+    private boolean isPhoto;
+
     @ManyToOne(targetEntity = PostInfo.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "postId")
     PostInfo postInfo;
@@ -28,5 +31,13 @@ public class Media {
 
     public void setPostInfo(PostInfo postInfo) {
         this.postInfo = postInfo;
+    }
+
+    public void setPhoto(boolean photo) {
+        isPhoto = photo;
+    }
+
+    public boolean isPhoto() {
+        return isPhoto;
     }
 }

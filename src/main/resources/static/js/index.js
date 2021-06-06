@@ -4,7 +4,7 @@ const btnAddTag = $('#addTag');
 const selectTag = "selectTag"
 var isAddTag;
 var isAddPos;
-var mediaNum=0;
+var postIdx = 0;
 var imgSrc = [];
 var imgFile = [];
 const maxImgNum =3;
@@ -54,7 +54,6 @@ function  login(){
     })
 }
 
-
 //登出
 function logout(){
     $.ajax({
@@ -85,13 +84,8 @@ function showTag(){
     )
 }
 
-
-
-
 //向后台提交帖子的接口
 function submitPost(userId,content, tag, lat, lng, medias){
-    // console.log({"uid":userId, "content":content, "tag":tag, "lat":lat, "lng": lng, "medias": medias});
-    // console.log(JSON.stringify({"uid":userId, "content":content, "tag":tag, "lat":lat, "lng": lng, "medias": medias}))
     var formData = new FormData()
     formData.append("uid", userId);
     formData.append("content",content);
@@ -99,15 +93,12 @@ function submitPost(userId,content, tag, lat, lng, medias){
     formData.append("lat",lat);
     formData.append("lng",lng);
     medias.forEach(element=>{formData.append('medias[]', element)})
-    // formData.append("medias",medias[0]);
     for (var [a, b] of formData.entries()) {
         console.log(a, b);
     }
-    // console.log(formData);
     $.ajax({
         url:'data/submitPost',
         type: 'POST',
-        // data: JSON.stringify({"uid":userId, "content":content, "tag":tag, "lat":lat, "lng": lng, "medias": medias}),
         data: formData,
         async: true,
         cache: false,
@@ -124,9 +115,76 @@ function submitPost(userId,content, tag, lat, lng, medias){
     })
 }
 
+//向后台获取帖子信息，s为开始位置，n为请求帖子数
+function fetchPost(s,n){
+    var posts
+    $.ajax({
+        url:"/data/fetchPost",
+        type:"post",
+        data:{"start":s, "num":n},
+        success:function(res){
+            $('#postArea').append(
+                showPostHtml(res.posts[0])
+            )
+        }
+    })
+}
+
+//返回显示帖子的html
+function showPostHtml(post){
+    var htmlTemplate = "<div class=\"box shadow-sm border rounded bg-white mb-3 osahan-post\">\n" +
+        "                     <div class=\"p-3 d-flex align-items-center border-bottom osahan-post-header\">\n" +
+        "                        <div class=\"dropdown-list-image mr-3\">\n" +
+        "                           <img class=\"rounded-circle\" src=\"img/p5.png\" alt=\"\">\n" +
+        "                           <div class=\"status-indicator bg-success\"></div>\n" +
+        "                        </div>\n" +
+        "                        <div class=\"font-weight-bold\">\n" +
+        "                           <div class=\"text-truncate\">{0}</div>\n" +
+        "                           <div class=\"small text-gray-500\">立志吃遍全国面食</div>\n" +
+        "                        </div>\n" +
+        "                        <span class=\"ml-auto small\">{1}</span>\n" +
+        "                     </div>\n" +
+        "                     <div class=\"p-3 border-bottom osahan-post-body\">\n" +
+        "                        <p class=\"mb-0\">{2}\n" +
+        "                        <a href=\"#\">#{3}</a></p>\n" +
+        "                     </div>\n" +
+        "{4}\n" +
+        "                     <div class=\"p-3 border-bottom osahan-post-footer\">\n" +
+        "                        <a href=\"#\" class=\"mr-3 text-secondary\"><i class=\"feather-heart text-danger\"></i> 16</a>\n" +
+        "                        <a href=\"#\" class=\"mr-3 text-secondary\"><i class=\"feather-message-square\"></i>0</a>\n" +
+        "                        <a href=\"#\" class=\"mr-3 text-secondary\"><i class=\"feather-share-2\"></i>2</a>\n" +
+        "                     </div>"
+    console.log(htmlTemplate.format(post.username, post.date, post.content, post.tag,  showMediaHtml(post.medias)));
+    return htmlTemplate.format(post.username, post.date, post.content, post.tag,  showMediaHtml(post.medias));
+}
+
+//显示媒体的html
+function showMediaHtml(medias){
+    console.log(medias)
+    var html = "<div>{0}</div>";
+    var medianHtml = ""
+    var photoTemplate = "<img src='{0}' width='100px' height='100px'>";
+    var videoTemplate = "<video src='{0}' width='100px' height='100px' autoplay='autoplay'>"
+    for(var i=0;i<medias.length;i++){
+        let media = medias[i];
+        if(media.photo){
+            medianHtml += photoTemplate.format(media.path);
+            medianHtml += '\n';
+        }
+        else {
+            medianHtml += videoTemplate.format(media.path);
+            medianHtml += '\n';
+        }
+    }
+    return html.format(medianHtml)
+
+}
+
+
+
 //-------------------------主程序区-------------------
-login();
 window.onbeforeunload = logout();
+login();
 showTag();
 $('#btnSendPost').click(function (){
     let tag = $('#'+selectTag).val();
@@ -148,3 +206,5 @@ $('#iptAddImage').on('change', function(){
         imgFile.push(fileList[i]);
     }
 })
+fetchPost(0,1);
+

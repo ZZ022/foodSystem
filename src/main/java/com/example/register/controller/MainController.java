@@ -4,14 +4,13 @@ import com.example.register.model.PostInfo;
 import com.example.register.model.PostInfoRepository;
 import java.io.File;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.example.register.model.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -26,15 +25,24 @@ public class MainController extends LoginController{
     @Autowired
     private MediaRepository mediaRepository;
 
-    private int max_posts = 5;
+    @Autowired
+    LikedRepository likedRepository;
+
 
     public List<PostInfo> getInfo(int n){
         List<PostInfo> posts=postInfoRepository.findAllByOrderByDateDesc();
         int m = Integer.min(posts.size(), n);
         return posts.subList(0,m);
     }
-    @Autowired
-    LikedRepository likedRepository;
+
+    private boolean isPhoto(String fileType){
+        if(Arrays.asList("tif","png","jpg","gif","tiff", "jfif", "pjpeg", "jpeg", "pjp").contains(fileType)){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
     @GetMapping("post")
     public String renderPost(){return "post";}
@@ -78,7 +86,35 @@ public class MainController extends LoginController{
     @RequestMapping("post/surf")
     @ResponseBody
     public List<PostInfo> surf(){
-        return getInfo(max_posts);
+        return getInfo(5);
+    }
+
+    @RequestMapping(value = "data/fetchPost", produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public PostFetch sendPost(@RequestParam(value = "start") int s, @RequestParam(value = "num") int n){
+        List<PostInfo> posts=postInfoRepository.findAllByOrderByDateDesc();
+        PostFetch res = new PostFetch();
+        if(s+n>=posts.size()-1){
+            List<Post> postFetches = new ArrayList<>();
+            for(int i=s;i<posts.size();i++){
+                postFetches.add(posts.get(i).getPost());
+            }
+            res.setPosts(postFetches);
+            res.setEnd(true);
+            System.out.println(res);
+            return res;
+        }
+        else {
+            List<Post> postFetches = new ArrayList<>();
+            for(int i=s;i<n+s;i++){
+                postFetches.add(posts.get(i).getPost());
+            }
+            res.setPosts(postFetches);
+            res.setEnd(false);
+            System.out.println(res);
+            return res;
+        }
+
     }
 
 
@@ -115,6 +151,7 @@ public class MainController extends LoginController{
         User user = userRepository.findById(userId);
         Foodtag foodTag = tagRepository.findByName(tag);
         System.out.println(foodTag.getid());
+        List<Media> localMedias = new ArrayList<>();
         Date date = new Date(System.currentTimeMillis());
         PostInfo postInfo = new PostInfo();
         postInfo.setDate(date);
@@ -136,15 +173,17 @@ public class MainController extends LoginController{
                 Media media = new Media();
                 media.setPostInfo(postInfo);
                 media.setPath(path);
+                media.setPhoto(isPhoto(fileType));
                 System.out.println("saving media");
                 mediaRepository.save(media);
+                localMedias.add(media);
             }
             catch (Exception e){
                 return false;
             }
-
         }
-
+        postInfo.setMedias(localMedias);
+        postInfoRepository.save(postInfo);
         return true;
     }
 }
