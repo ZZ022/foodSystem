@@ -5,4 +5,6 @@ import java.util.List;
 
 public interface PostInfoRepository extends JpaRepository<PostInfo, Integer> {
     List<PostInfo> findAllByOrderByDateDesc();
+    List<PostInfo> findAllByUser(User user);
+    List<PostInfo> findAllByFoodtag(Foodtag foodtag);
 }

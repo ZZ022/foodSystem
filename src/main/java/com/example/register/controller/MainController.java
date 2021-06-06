@@ -120,14 +120,23 @@ public class MainController extends LoginController{
 
     @RequestMapping("/api/likedAdd")
     @ResponseBody
-    public void likedAdd(@RequestParam(value="btnid") int postId, @RequestParam(value = "uid") int userId){
-        System.out.println(postId);
+    public boolean likedAdd(@RequestParam(value="postId") int postId, @RequestParam(value = "userId") int userId){
+//        System.out.println(postId);
+        System.out.println("I'm here");
         LikedInfo lInfo=new LikedInfo();
         lInfo.setUserId(userId);
         lInfo.setDate(new Date());
         lInfo.setPostId(postId);
         likedRepository.save(lInfo);
         System.out.println("liked success");
+        return true;
+    }
+
+    @RequestMapping("/api/likedUpdated")
+    @ResponseBody
+    public int likedUpdate(@RequestParam(value = "postId") int postId){
+        int numUpdated = likedRepository.countLikedInfosByPostId(postId);
+        return numUpdated;
     }
 
     @RequestMapping("data/addTag")
@@ -186,4 +195,24 @@ public class MainController extends LoginController{
         postInfoRepository.save(postInfo);
         return true;
     }
+
+    @RequestMapping("data/search")
+    @ResponseBody
+    public List<PostInfo> postsSerarch(@RequestParam(value = "content") String content){
+        User user = userRepository.findByName(content);
+        Foodtag tag = tagRepository.findByName(content);
+        List<PostInfo> postsRel = new ArrayList<>();
+        if(user!=null){
+            postsRel = postInfoRepository.findAllByUser(user);
+        }
+        else if(tag != null){
+            System.out.println("I'm here");
+            postsRel = postInfoRepository.findAllByFoodtag(tag);
+        }
+        int count = postsRel.size();
+        System.out.println(count);
+        return postsRel;
+    }
+
+
 }
