@@ -29,6 +29,9 @@ public class PostInfo {
     @OneToMany(targetEntity = LikedInfo.class, cascade = CascadeType.ALL)
     private List<LikedInfo> likedInfos;
 
+    @OneToMany(targetEntity = CommentInfo.class, cascade = CascadeType.ALL)
+    private List<CommentInfo> commentInfos;
+
     @ManyToOne(targetEntity = Foodtag.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "tagid")
     private Foodtag foodtag;
@@ -42,6 +45,9 @@ public class PostInfo {
     @OneToMany(targetEntity = Media.class, cascade = CascadeType.ALL)
     @JoinColumn
     private List<Media> medias;
+
+
+    public PostInfo(){};
 
     public int getnId() {
         return nId;
@@ -75,10 +81,17 @@ public class PostInfo {
         this.foodtag = foodtag;
     }
 
-    public PostInfo(){};
 
     public List<LikedInfo> getLikedInfos() {
         return likedInfos;
+    }
+
+    public List<CommentInfo> getCommentInfos() {
+        return commentInfos;
+    }
+
+    public void setCommentInfos(List<CommentInfo> commentInfos) {
+        this.commentInfos = commentInfos;
     }
 
     public Date getDate() {

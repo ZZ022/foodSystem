@@ -56,6 +56,7 @@ function  login(){
     })
 }
 
+
 //登出
 function logout(){
     $.ajax({
@@ -131,6 +132,32 @@ function submitPost(userId,content, tag, lat, lng, medias){
         }
     })
 }
+
+// 搜索框，实现根据content搜索用户表-->美食tag表，并返回相应的帖子显示
+function searchByUserOrTag(content) {
+    $.ajax(
+        {
+            url:"data/search",
+            type:"post",
+            data:{"content":content},
+            success:function(res){
+                console.log(res);
+                // 考虑怎样将帖子动态链接到页面中
+            }
+        }
+    )
+}
+
+// 点赞操作
+function likedAdd() {
+    $.ajax({
+        url:"data/likedAdd",
+        type:"post",
+
+    })
+
+}
+
 
 //向后台获取帖子信息，s为开始位置，n为请求帖子数
 function fetchPost(s,n, postArea){
@@ -213,6 +240,52 @@ function showMediaHtml(medias){
 
 
 
+// 搜索框，实现根据content搜索用户表-->美食tag表，并返回相应的帖子显示
+function searchByUserOrTag(content) {
+    $.ajax(
+        {
+            url:"data/search",
+            type:"post",
+            data:{"content":content},
+            success:function(res){
+                console.log(res);
+                // 考虑怎样将帖子动态链接到页面中
+            }
+        }
+    )
+}
+
+// 实现将该点赞数据存入数据库的动作
+function saveLikedToDB(postId,userId){
+    $.ajax({
+        url:"api/likedAdd",
+        type:"post",
+        data:{
+            "postId":postId,
+            "userId":userId
+        },
+        success:function (res) {
+            console.log("点赞数据存入数据库"+res);
+            return res;
+        }
+    })
+}
+
+// 实现根据postid获取更新后的点赞数
+function updatedCount(postId){
+    $.ajax({
+        url:"api/likedUpdated",
+        type:"post",
+        data:{
+            "postId":postId
+        },
+        success:function (res) {
+            console.log("获取的更新值"+res);
+            return res;
+        }
+    })
+}
+
 //-------------------------主程序区-------------------
 window.onbeforeunload = logout();
 login();
@@ -251,3 +324,39 @@ if(!isPostEnd){
         postIdx += postNum;
     }
 }
+fetchPost(0,1);
+if(!isPostEnd){
+    fetchPost(postIdx, postNum, 'postArea2');
+    if(!isPostEnd){
+        $('#postArea2').append(
+            '<button id="btnMorePost" onclick="viewMore()">浏览更多</button>'
+        );
+        postIdx += postNum;
+    }
+}
+// 搜索按钮
+$('#search').click(function () {
+    var content = document.getElementById("search_input").value;
+    // 用户优先
+    postsRel = searchByUserOrTag(content);
+
+})
+
+//点赞,获取postId，userId和目前postId的点赞个数
+$('#like').click(function () {
+    // var likeNums = document.getElementById("like").innerText;
+    // 模拟从前端元素获取到的用户和帖子编号
+    var postId = 1;
+    var userId = uid;
+    // 实现将该点赞数据存入数据库的动作
+    var flag = saveLikedToDB(postId,userId);
+    if(flag !== false){
+        // 实现根据postid获取更新后的点赞数
+        var numUpdated = updatedCount(postId);
+    }
+    else {
+        alert("服务器异常，点赞失败！");
+    }
+    document.getElementById("like").innerText = numUpdated.toString();
+
+})
