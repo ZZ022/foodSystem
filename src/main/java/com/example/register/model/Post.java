@@ -11,14 +11,14 @@ public class Post {
     private int likedNum;
     private String content;
     private String tag;
-    private Date date;
+    private String date;
     private List<MediaFetch> medias;
     private float lon;
     private float lat;
 
     public Post(){}
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -62,7 +62,7 @@ public class Post {
         return id;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 

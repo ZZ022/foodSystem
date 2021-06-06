@@ -4,6 +4,8 @@ const btnAddTag = $('#addTag');
 const selectTag = "selectTag"
 var isAddTag;
 var isAddPos;
+var isPostEnd;
+var postNum=3;
 var postIdx = 0;
 var imgSrc = [];
 var imgFile = [];
@@ -92,7 +94,22 @@ function submitPost(userId,content, tag, lat, lng, medias){
     formData.append("tag",tag);
     formData.append("lat",lat);
     formData.append("lng",lng);
-    medias.forEach(element=>{formData.append('medias[]', element)})
+    if(medias.length!=0) {
+        medias.forEach(element => {
+            formData.append('medias[]', element);
+        })
+        formData.append('hasMedia', true);
+    }
+    else {
+        let img = new File([], "", undefined);
+        medias.push(img);
+        medias.forEach(element => {
+            formData.append('medias[]', element);
+        })
+        formData.append('hasMedia', false);
+    }
+
+
     for (var [a, b] of formData.entries()) {
         console.log(a, b);
     }
@@ -116,23 +133,39 @@ function submitPost(userId,content, tag, lat, lng, medias){
 }
 
 //向后台获取帖子信息，s为开始位置，n为请求帖子数
-function fetchPost(s,n){
-    var posts
+function fetchPost(s,n, postArea){
     $.ajax({
         url:"/data/fetchPost",
         type:"post",
         data:{"start":s, "num":n},
+        async: false,
         success:function(res){
-            $('#postArea').append(
-                showPostHtml(res.posts[0])
-            )
+            // console.log(res);
+            // res = eval("(" + res + ")");
+            // console.log(typeof res);
+            isPostEnd = res.end;
+            for(var i=0;i<res.posts.length;i++){
+                $('#{0}'.format(postArea)).append(showPostHtml(res.posts[i]));
+            }
         }
     })
 }
 
+function viewMore(){
+    fetchPost(postIdx, postNum, 'postArea2');
+    if(!isPostEnd){
+        $('#postArea2').append(
+            '<button id="btnMorePost" onclick="viewMore()">浏览更多</button>'
+        );
+        postIdx += postNum;
+        console.log(postIdx);
+    }
+}
+
 //返回显示帖子的html
 function showPostHtml(post){
-    var htmlTemplate = "<div class=\"box shadow-sm border rounded bg-white mb-3 osahan-post\">\n" +
+    console.log(post);
+    var htmlTemplate = "<div class=\"box shadow-sm border rounded bg-white mb-3 osahan-post\" id='post{5}'>\n" +
         "                     <div class=\"p-3 d-flex align-items-center border-bottom osahan-post-header\">\n" +
         "                        <div class=\"dropdown-list-image mr-3\">\n" +
         "                           <img class=\"rounded-circle\" src=\"img/p5.png\" alt=\"\">\n" +
@@ -154,8 +187,8 @@ function showPostHtml(post){
         "                        <a href=\"#\" class=\"mr-3 text-secondary\"><i class=\"feather-message-square\"></i>0</a>\n" +
         "                        <a href=\"#\" class=\"mr-3 text-secondary\"><i class=\"feather-share-2\"></i>2</a>\n" +
         "                     </div>"
-    console.log(htmlTemplate.format(post.username, post.date, post.content, post.tag,  showMediaHtml(post.medias)));
-    return htmlTemplate.format(post.username, post.date, post.content, post.tag,  showMediaHtml(post.medias));
+    console.log(htmlTemplate.format(post.username, post.date, post.content, post.tag,  showMediaHtml(post.medias), post.id));
+    return htmlTemplate.format(post.username, post.date, post.content, post.tag,  showMediaHtml(post.medias), post.id);
 }
 
 //显示媒体的html
@@ -164,16 +197,14 @@ function showMediaHtml(medias){
     var html = "<div>{0}</div>";
     var medianHtml = ""
     var photoTemplate = "<img src='{0}' width='100px' height='100px'>";
-    var videoTemplate = "<video src='{0}' width='100px' height='100px' autoplay='autoplay'>"
+    var videoTemplate = "<video src='{0}' width='100px' height='100px' autoplay='autoplay'></video>"
     for(var i=0;i<medias.length;i++){
         let media = medias[i];
         if(media.photo){
             medianHtml += photoTemplate.format(media.path);
-            medianHtml += '\n';
         }
         else {
             medianHtml += videoTemplate.format(media.path);
-            medianHtml += '\n';
         }
     }
     return html.format(medianHtml)
@@ -192,6 +223,8 @@ $('#btnSendPost').click(function (){
     let lng = 35.5;
     let content = $('#sendArea').val();
     submitPost(uid, content, tag, lat, lng, imgFile)
+    $('#sendArea').val('');
+    $('#iptAddImage').val('')
 })
 $('#iptAddImage').on('change', function(){
     var fileList = this.files;
@@ -206,5 +239,15 @@ $('#iptAddImage').on('change', function(){
         imgFile.push(fileList[i]);
     }
 })
-fetchPost(0,1);
-
+fetchPost(0,1, 'postArea1');
+postIdx = 1;
+// console.log(isPostEnd)
+if(!isPostEnd){
+    fetchPost(postIdx, postNum, 'postArea2');
+    if(!isPostEnd){
+        $('#postArea2').append(
+            '<button id="btnMorePost" onclick="viewMore()">浏览更多</button>'
+        );
+        postIdx += postNum;
+    }
+}

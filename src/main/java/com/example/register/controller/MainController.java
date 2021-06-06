@@ -94,7 +94,7 @@ public class MainController extends LoginController{
     public PostFetch sendPost(@RequestParam(value = "start") int s, @RequestParam(value = "num") int n){
         List<PostInfo> posts=postInfoRepository.findAllByOrderByDateDesc();
         PostFetch res = new PostFetch();
-        if(s+n>=posts.size()-1){
+        if(s+n>=posts.size()){
             List<Post> postFetches = new ArrayList<>();
             for(int i=s;i<posts.size();i++){
                 postFetches.add(posts.get(i).getPost());
@@ -147,7 +147,8 @@ public class MainController extends LoginController{
     public boolean submitPost(@RequestParam(value = "uid") int userId,@RequestParam(value = "tag") String tag,
                               @RequestParam(value = "lat") float lat, @RequestParam(value = "lng") float lng,
                            @RequestParam(value = "medias[]") MultipartFile[] medias,
-                           @RequestParam(value = "content") String content){
+                           @RequestParam(value = "content") String content,
+                              @RequestParam(value = "hasMedia") boolean hasMedia){
         User user = userRepository.findById(userId);
         Foodtag foodTag = tagRepository.findByName(tag);
         System.out.println(foodTag.getid());
@@ -161,29 +162,31 @@ public class MainController extends LoginController{
         postInfo.setLatitude(lat);
         postInfo.setLongtitude(lng);
         postInfoRepository.save(postInfo);
-        for(int i=0;i<medias.length;i++){
-            String sourcePath =  "E:\\课程\\大三下\\gis工程\\实习\\foodSystem\\src\\main\\resources\\";
-            String path = "media\\"+postInfo.getnId() + "_" + i +'.';
-            String originalFileName = medias[i].getOriginalFilename();
-            String fileType = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
-            path += fileType;
-            File file = new File(sourcePath+path);
-            try {
-                medias[i].transferTo(file);
-                Media media = new Media();
-                media.setPostInfo(postInfo);
-                media.setPath(path);
-                media.setPhoto(isPhoto(fileType));
-                System.out.println("saving media");
-                mediaRepository.save(media);
-                localMedias.add(media);
+        if(hasMedia){
+            for(int i=0;i<medias.length;i++){
+                String sourcePath =  "E:\\课程\\大三下\\gis工程\\实习\\foodSystem\\src\\main\\resources\\";
+                String path = "media\\"+postInfo.getnId() + "_" + i +'.';
+                String originalFileName = medias[i].getOriginalFilename();
+                String fileType = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
+                path += fileType;
+                File file = new File(sourcePath+path);
+                try {
+                    medias[i].transferTo(file);
+                    Media media = new Media();
+                    media.setPostInfo(postInfo);
+                    media.setPath(path);
+                    media.setPhoto(isPhoto(fileType));
+                    System.out.println("saving media");
+                    mediaRepository.save(media);
+                    localMedias.add(media);
+                }
+                catch (Exception e){
+                    return false;
+                }
             }
-            catch (Exception e){
-                return false;
-            }
+            postInfo.setMedias(localMedias);
+            postInfoRepository.save(postInfo);
         }
-        postInfo.setMedias(localMedias);
-        postInfoRepository.save(postInfo);
         return true;
     }
 }

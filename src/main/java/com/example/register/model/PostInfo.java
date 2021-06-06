@@ -117,7 +117,7 @@ public class PostInfo {
             mediaFetch.setPhoto(medias.get(i).isPhoto());
             paths.add(mediaFetch);
         }
-        post.setDate(date);
+        post.setDate(date.toString());
         post.setMedias(paths);
         return post;
     }
