@@ -1,6 +1,7 @@
 package com.example.register.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,7 +18,29 @@ public class Foodtag {
     private String city;
 
     @OneToMany(targetEntity = PostInfo.class, cascade = CascadeType.ALL)
-    private List<PostInfo> postInfos;
+    private List<PostInfo> postInfos = new ArrayList<>();
+
+    @Column(name = "favor")
+    private String favor;
+
+    @Column(name = "description")
+    private String description;
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setFavor(String favor) {
+        this.favor = favor;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getFavor() {
+        return favor;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -41,5 +64,9 @@ public class Foodtag {
 
     public String getCity() {
         return city;
+    }
+
+    public void addPost(PostInfo postInfo){
+        this.postInfos.add(postInfo);
     }
 }

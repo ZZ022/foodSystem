@@ -16,7 +16,8 @@
       <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
       <!-- Custom styles for this template -->
       <link href="css/style.css" rel="stylesheet">
-      
+      <link href="css/mui.min.css" rel="stylesheet" />
+      <link href="css/mui.indexedlist.css" rel="stylesheet" />
    </head>
    <body>
       <!-- 最上面的导航框 -->
@@ -231,12 +232,6 @@
                         <li class="nav-item">
                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">我的社区</a>
                         </li>
-                       <!-- <li class="nav-item">
-                           <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"><i class="feather-image"></i> Upload a photo</a>
-                        </li>
-                        <li class="nav-item">
-                           <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false"><i class="feather-clipboard"></i> Write an article</a>
-                        </li>  -->
                      </ul>
                      <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -245,7 +240,7 @@
                                  <img class="rounded-circle" src="img/user.png" alt="">
                                  <div class="status-indicator bg-success"></div>
                               </div>
-                              <div class="w-100">
+                              <div class="w-100" id="mediaArea">
                                  <textarea placeholder="我想分享..." class="form-control border-0 p-0 shadow-none" rows="3" id="sendArea"></textarea>
                               </div>
                            </div>
@@ -260,49 +255,70 @@
                               <textarea placeholder="Write an article..." class="form-control border-0 p-0 shadow-none" rows="3"></textarea>
                            </div>
                         </div> -->
-                     </div>
                      <div class="border-top p-3 d-flex align-items-center">
-                        <!-- <div class="mr-auto"><a href="#" class="text-link small"><i class="feather-at-sign" id="addTag"></i> 添加美食TAG</a></div> -->
-                        <div class="mr-auto" id ="addTag"></div>
-                        <div class="mr-auto"><a href="#" class="text-link small"><i class="feather-map-pin" id="addPositon"></i> 添加位置</a></div>
+                        <!-- 选择美食tag -->
+                        <div id="tagdiv" class="mr-auto"><a href = "JavaScript:void(0)" onclick = "openDialog()"><i class="feather-at-sign"></i> 添加美食TAG<i id="tagChoose"></i></a>
+                           <a id="uploadtag" href="#"></a>
+                           <div id="light" class="white_content">
+                              <div class="mui-content">
+                                 <div id='list' class="mui-indexed-list">
+                                    <header class="mui-bar mui-bar-nav">
+                                       <h1 class="mui-title"></h1>
+                                    </header>
+                                    <div>
+                                       <a href = "javascript:void(0)" onclick = "closeDialog()">关闭</a>
+                                       <a href = "javascript:void(0)" onclick = "createtag()">创建美食TAG</a>
+                                    </div>
+                                    <div class="mui-indexed-list-alert"></div>
+                                    <div class="mui-indexed-list-inner">
+
+                                       <ul lass="mui-table-view" id="tagArea">
+<!--                                          <li id="taga" data-group="A" class="mui-table-view-divider mui-indexed-list-group">A</li>-->
+                                       </ul>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+
+                           <!-- 创建美食tag -->
+                           <div id="light1" class="white_content" style="flex-direction: column;">
+                              <a href = "javascript:void(0)" onclick = "closeDialog1()">关闭</a>
+                              <a href = "javascript:void(0)" onclick = "createtag1()">创建</a>
+
+                              <div class="messlist">
+                                 <label>美食名称</label>
+                                 <input type="text" placeholder="名称..." id="input1" />
+                              </div>
+                              <div class="messlist">
+                                 <label>所在地</label>
+                                 <input type="text" placeholder="城市..." id="input2"/>
+                              </div>
+                              <div class="messlist">
+                                 <label>口味</label>
+                                 <input type="text" placeholder="微辣、较甜..." id="input3" />
+                              </div>
+                              <div class="messlist">
+                                 <label>美食介绍</label>
+                                 <textarea name="Text1" placeholder="介绍..." rows="10" id="input4" style="width: 300px;height: 500px;" ></textarea>
+                              </div>
+                           </div>
+                     </div>
+
+
+
                         <div class="flex-shrink-1">
 <!--                           <button type="button" class="btn btn-light btn-sm" id="btnAddImage">添加图片</button>-->
                            <div class="flex-shrink-1" id="divImageArea">
-                              <input type="file" name="file" accept="image/tiff, image/png, image/jpeg, image/gif, video/mp4, image/avif, image/mpeg" id="iptAddImage">
+                              <label for="iptAddImage" class="btn btn-light btn-sm">打开相册</label>
+                              <input  type="file"  style="display: none;vertical-align: middle" accept="image/tiff, image/png, image/jpeg, image/gif, video/mp4, image/avif, image/mpeg" id="iptAddImage">
+                              <button type="button" class="btn btn-primary btn-sm" id="btnSendPost" style='vertical-align: middle'>发布</button>
                            </div>
-                           <button type="button" class="btn btn-primary btn-sm" id="btnSendPost">发布</button>
                         </div>
                      </div>
-                  </div>
+
                   <div id="postArea1"></div>
-                  <!-- 第一个用户帖子 -->
-<!--                  <div class="box shadow-sm border rounded bg-white mb-3 osahan-post">-->
-<!--                     <div class="p-3 d-flex align-items-center border-bottom osahan-post-header">-->
-<!--                        <div class="dropdown-list-image mr-3">-->
-<!--                           <img class="rounded-circle" src="img/p5.png" alt="">-->
-<!--                           <div class="status-indicator bg-success"></div>-->
-<!--                        </div>-->
-<!--                        <div class="font-weight-bold">-->
-<!--                           <div class="text-truncate">西北大汉</div>-->
-<!--                           <div class="small text-gray-500">立志吃遍全国面食</div>-->
-<!--                        </div>-->
-<!--                        <span class="ml-auto small">3 小时前</span>-->
-<!--                     </div>-->
-<!--                     <div class="p-3 border-bottom osahan-post-body">-->
-<!--                        <p class="mb-0">刀削面入口外滑内筋，软而不粘，越嚼越香，刀削面的调料也是多种多样的，有番茄酱、肉炸酱、羊肉汤、金针木耳鸡蛋打卤等。它同武汉热干面、北京炸酱面、河南烩面、四川担担面同称为五大面食名品，享有盛誉。-->
-<!--                        <a href="#">#陕西刀削面</a></p>-->
-<!--                     </div>-->
-<!--                     <div class="p-3 border-bottom osahan-post-footer">-->
-<!--                        <a href="#" class="mr-3 text-secondary"><i class="feather-heart text-danger"></i> 16</a>-->
-<!--                        <a href="#" class="mr-3 text-secondary"><i class="feather-message-square"></i>0</a>-->
-<!--                        <a href="#" class="mr-3 text-secondary"><i class="feather-share-2"></i>2</a>-->
-<!--                     </div>-->
-                     <!-- <div class="p-3">
-                        <button type="button" class="btn btn-outline-primary btn-sm mr-1">Awesome!!</button>
-                        <button type="button" class="btn btn-light btn-sm mr-1">😍</button>
-                        <button type="button" class="btn btn-outline-secondary btn-sm mr-1">Whats it about?</button>
-                        <button type="button" class="btn btn-outline-secondary btn-sm mr-1">Oooo Great Wow</button>
-                     </div> -->
+
+
                   <!-- 热门美食 -->
                   <div class="mb-3 shadow-sm rounded box bg-white osahan-slider-main">
                      <div class="osahan-slider">
@@ -383,45 +399,8 @@
                      </div>
                   </div>
                   <div id="postArea2"></div>
-                  <!-- 第二个用户帖子 -->
-<!--                  <div class="box mb-3 shadow-sm border rounded bg-white osahan-post">-->
-<!--                     <div class="p-3 d-flex align-items-center border-bottom osahan-post-header">-->
-<!--                        <div class="dropdown-list-image mr-3">-->
-<!--                           <img class="rounded-circle" src="img/p6.png" alt="">-->
-<!--                           <div class="status-indicator bg-success"></div>-->
-<!--                        </div>-->
-<!--                        <div class="font-weight-bold">-->
-<!--                           <div class="text-truncate">小胖胖</div>-->
-<!--                           <div class="small text-gray-500">碳水使人快乐</div>-->
-<!--                        </div>-->
-<!--                        <span class="ml-auto small">5 小时前</span>-->
-<!--                     </div>-->
-<!--                     <div class="p-3 border-bottom osahan-post-body">-->
-<!--                        <p>找到真爱了😍😎胡辣汤是中国北方早餐中常见的传统汤类名吃，用胡椒，辣椒，牛肉粒，骨汤，粉芡，细粉条，黄花菜，花生，木耳等制作而成。早上来一碗真的太爽了吧<a href="#">#胡辣汤-->
-<!--                        </a></p>-->
-<!--                        <img src="img/post1.png" class="img-fluid" alt="Responsive image">-->
-<!--                     </div>-->
-<!--                     <div class="p-3 border-bottom osahan-post-footer">-->
-<!--                        <a href="#" class="mr-3 text-secondary"><i class="feather-heart text-danger"></i> 42</a>-->
-<!--                        <a href="#" class="mr-3 text-secondary"><i class="feather-message-square"></i> 1</a>-->
-<!--                        <a href="#" class="mr-3 text-secondary"><i class="feather-share-2"></i> 7</a>-->
-<!--                     </div>-->
-<!--                     &lt;!&ndash; 评论 &ndash;&gt;-->
-<!--                     <div class="p-3 d-flex align-items-top border-bottom osahan-post-comment">-->
-<!--                        <div class="dropdown-list-image mr-3">-->
-<!--                           <img class="rounded-circle" src="img/p7.png" alt="">-->
-<!--                           <div class="status-indicator bg-success"></div>-->
-<!--                        </div>-->
-<!--                        <div class="font-weight-bold">-->
-<!--                           <div class="text-truncate"> 金金的小肚肚 <span class="float-right small"> 2 分钟前</span></div>-->
-<!--                           <div class="form-control border-0 p-0 shadow-none">我也超爱啊姐妹！！</div>-->
-<!--                        </div>-->
-<!--                     </div>-->
-<!--                     <div class="p-3">-->
-<!--                        <textarea placeholder="评论..." class="form-control border-0 p-0 shadow-none" rows="1"></textarea>-->
-<!--                     </div>-->
-<!--                  </div>-->
-
+                     </div>
+                  </div>
                </main>
                
                <!-- 左边页面-->
@@ -474,7 +453,7 @@
                         <p class="mb-0 text-muted">点击进入</p>
                      </div>
                      <div class="p-3">
-                        <button type="button" class="btn btn-outline-primary pl-4 pr-4"> 创建美食TAG </button>
+<!--                        <button type="button" class="btn btn-outline-primary pl-4 pr-4"> 创建美食TAG </button>-->
                      </div>
                   </div>
                </aside>
@@ -625,6 +604,8 @@
       <!-- Custom scripts for all pages-->
       <script src="js/osahan.js"></script>
       <script src="js/index.js"></script>
+      <script src="js/mui.min.js"></script>
+      <script src="js/mui.indexedlist.js"></script>
    <style>
 .copyrights{text-indent:-9999px;height:0;line-height:0;font-size:0;overflow:hidden;}
 </style>

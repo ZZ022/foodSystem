@@ -10,7 +10,16 @@ var postIdx = 0;
 var imgSrc = [];
 var imgFile = [];
 const maxImgNum =3;
+var tagid = 0;
 var moreId = 0;
+var tag = '';
+const imagefileTypes = [
+    'image/jpeg',
+    'image/pjpeg',
+    'image/png'
+];
+var photoTemplate = "<img src='{0}' width='160px' height='90px' style='vertical-align: middle'>";
+var videoTemplate = "<video src='{0}' width='160px' height='90px' style='vertical-align: middle' controls ></video>"
 
 function getObjectURL(file) {
     var url = null ;
@@ -190,7 +199,7 @@ function showPostHtml(post){
         "                     </div>\n" +
         "{4}\n" +
         "                     <div class=\"p-3 border-bottom osahan-post-footer\">\n" +
-        "                        <a  class=\"mr-3 text-secondary\"><i class=\"feather-heart text-danger\" onclick=\"Like({5})\" id='like{5}'>{6}</i></a>\n" +
+        "                        <a  href = \"javascript:void(0)\" class=\"mr-3 text-secondary\"><i class=\"feather-heart text-danger\" onclick=\"Like({5})\" id='like{5}'>{6}</i></a>\n" +
         "                        <a  class=\"mr-3 text-secondary\"><i class=\"feather-message-square\"></i>0</a>\n" +
         "                        <a  class=\"mr-3 text-secondary\"><i class=\"feather-share-2\"></i>2</a>\n" +
         "                     </div>"
@@ -202,10 +211,8 @@ function showPostHtml(post){
 //显示媒体的html
 function showMediaHtml(medias){
     console.log(medias)
-    var html = "<div>{0}</div>";
-    var medianHtml = ""
-    var photoTemplate = "<img src='{0}' width='100px' height='100px'>";
-    var videoTemplate = "<video src='{0}' width='100px' height='100px' autoplay='autoplay'></video>"
+    var html = "<div align=\"absbottom\">{0}</div>";
+    var medianHtml = "";
     for(var i=0;i<medias.length;i++){
         let media = medias[i];
         if(media.photo){
@@ -238,14 +245,45 @@ function Like(postId){
 function searchByUserOrTag(content) {
     $.ajax(
         {
-            url:"data/search",
+            url:"data/isTag",
             type:"post",
             data:{"content":content},
             async:false,
             success:function(res){
-                console.log(res);
                 postSet = res.posts;
                 // 考虑怎样将帖子动态链接到页面中
+            }
+        }
+    )
+}
+
+function search(content) {
+    $.ajax(
+        {
+            url:"data/findSearchType",
+            type:"post",
+            data:{"content":content},
+            async:false,
+            success:function(res){
+                switch (res){
+                    case 1:
+                        searchByUserOrTag(content);
+                        $('#postArea1').html('');
+                        $('#postArea2').html('');
+                        renderPost();
+                        break;
+                    case 0:
+                        $.ajax({
+                            url:'data/getUserIdByName',
+                            data:{"username":content},
+                            success(res){
+                                location.href='profile?uid={0}&vid={1}'.format(res, uid);
+                            }
+                        });
+                        break;
+                    default:
+                        alert('查找失败');
+                }
             }
         }
     )
@@ -321,6 +359,63 @@ function renderPost(){
     }
 }
 
+function addTag(id){
+    tag = $('#tag{0}'.format(id)).html();
+    $('#tagChoose').html("#"+tag);
+    closeDialog();
+}
+
+function  openDialog(){
+    html = "";
+    document.getElementById('light').style.display='block';
+    $.ajax(
+        {
+            url:"data/addTag",
+            type:"post",
+            data:{},
+            success:function(res){
+                $('#tagArea').html('');
+                tagid =0;
+                console.log(res);
+                var html ="";
+                for(var i=0; i<res.length; i++){
+                    html += "<li class=\"mui-table-view-divider mui-indexed-list-group\"><i id=\"tag{0}\">{1}</i><button onclick='addTag({0})'>添加</button></li>".format(tagid,res[i]);
+                    tagid+=1;
+                }
+                // console.log(html);
+                btnAddTag.append(html);
+                $('#tagArea').html(html);
+            }
+        }
+    )
+}
+
+function closeDialog(){
+    document.getElementById('light').style.display='none';
+    //window.location.replace("index.html");
+}
+function closeDialog1(){
+    document.getElementById('light1').style.display='none';
+    //window.location.replace("index.html");
+}
+function createtag(){
+    document.getElementById('light1').style.display='block';
+    closeDialog();
+}
+
+function createtag1(){
+    const name=document.getElementById('input1').value;
+    const city=document.getElementById('input2').value;
+    const favor=document.getElementById('input3').value;
+    const intro=document.getElementById('input4').value;
+    $.ajax({
+        url:'data/saveTag',
+        data:{
+            "name":name,"city":city,"favor":favor,"intro":intro
+        }
+    })
+    closeDialog1();
+}
 //-------------------------主程序区-------------------
 window.onbeforeunload = logout();
 login();
@@ -357,17 +452,23 @@ $.ajax({
     }
 })
 $('#btnSendPost').click(function (){
-    let tag = $('#'+selectTag).val();
+    console.log('sending');
+    // let tag = $('#'+selectTag).val();
     let lat = 40;
     let lng = 35.5;
     let content = $('#sendArea').val();
-    submitPost(uid, content, tag, lat, lng, imgFile)
-    $('#sendArea').val('');
-    $('#iptAddImage').val('')
+    if(tag!=''){
+        submitPost(uid, content, tag, lat, lng, imgFile)
+        $('#sendArea').val('');
+        $('#iptAddImage').val('');
+        $('#mediaArea').html('');
+    }
+    else {
+        alert("请选择标签");
+    }
 })
 $('#iptAddImage').on('change', function(){
     var fileList = this.files;
-    console.log(fileList)
     for(var i = 0; i < fileList.length; i++) {
         if(imgSrc.length==maxImgNum){
             alert("最多添加{0}张图片".format(maxImgNum))
@@ -376,10 +477,17 @@ $('#iptAddImage').on('change', function(){
         var imgSrcI = getObjectURL(fileList[i]);
         imgSrc.push(imgSrcI);
         imgFile.push(fileList[i]);
+        if(imagefileTypes.includes(fileList[i].type)){
+            $("#mediaArea").append(photoTemplate.format(imgSrcI));
+        }
+        else {
+            $("#mediaArea").append(videoTemplate.format(imgSrcI));
+        }
     }
 })
 fetchPost(0, postNum);
 renderPost();
+$('#hrefToProfile').attr('href', 'profile?uid={0}&vid={0}'.format(uid));
 
 // fetchPost(0,1);
 // if(!isPostEnd){
@@ -394,12 +502,9 @@ renderPost();
 // 搜索按钮
 $('#btnSearch').click(function () {
     var content = $('#search_input').val();
-    console.log(content);
+    // console.log(content);
     // 用户优先
-    searchByUserOrTag(content);
-    $('#postArea1').html('');
-    $('#postArea2').html('');
-    renderPost();
+    search(content);
 })
 
 //点赞,获取postId，userId和目前postId的点赞个数

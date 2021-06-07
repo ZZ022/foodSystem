@@ -38,7 +38,7 @@ function  login(){
     $.ajax({
         url:"/data/login",
         type:"post",
-        data:{"uid":uid},
+        data:{"uid":vid},
     })
 }
 
@@ -47,12 +47,12 @@ function logout(){
     $.ajax({
         url:"/data/logout",
         type:"post",
-        data:{"uid":uid},
+        data:{"uid":vid},
     })
 };
 
 function Like(postId){
-    var flag = saveLikedToDB(postId,uid);
+    var flag = saveLikedToDB(postId,vid);
     var numUpdated;
     if(flag != false){
         // 实现根据postid获取更新后的点赞数
@@ -106,7 +106,7 @@ function isLiked(postid){
     $.ajax(({
         url:"api/isLiked",
         type:"post",
-        data:{"uid":uid, "postid":postid},
+        data:{"uid":vid, "postid":postid},
         async:false,
         success:function(data){
             if(data){
@@ -268,3 +268,4 @@ $.ajax({
         renderPost();
     }
 })
+$('#hrefToProfile').attr('href', 'index?uid={0}'.format(vid));

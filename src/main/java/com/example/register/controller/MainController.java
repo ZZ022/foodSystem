@@ -174,6 +174,8 @@ public class MainController extends LoginController{
         postInfo.setLatitude(lat);
         postInfo.setLongtitude(lng);
         postInfoRepository.save(postInfo);
+        foodTag.addPost(postInfo);
+        tagRepository.save(foodTag);
         if(hasMedia){
             for(int i=0;i<medias.length;i++){
                 String sourcePath =  "E:\\课程\\大三下\\gis工程\\实习\\foodSystem\\src\\main\\resources\\";
@@ -206,9 +208,7 @@ public class MainController extends LoginController{
     @ResponseBody
     public PostFetch postsSerarch(@RequestParam(value = "content") String content){
         User user = userRepository.findByName(content);
-        System.out.println(user);
         Foodtag tag = tagRepository.findByName(content);
-        System.out.println(tag);
         if(user!=null){
             List<PostInfo> posts=postInfoRepository.findAllByUserOrderByDateDesc(user);
             PostFetch res = new PostFetch();
@@ -309,4 +309,39 @@ public class MainController extends LoginController{
         return true;
     }
 
+    @RequestMapping(value = "data/findSearchType")
+    @ResponseBody
+    public int findSearchType(@RequestParam(value = "content") String content){
+        User user = userRepository.findByName(content);
+        Foodtag tag = tagRepository.findByName(content);
+        if(user!=null){
+            return 0;
+        }
+        else if(tag!=null){
+            return 1;
+        }
+        else {
+            return -1;
+        }
+    }
+
+    @RequestMapping(value = "data/getUserIdByName")
+    @ResponseBody
+    public int getUserIdByName(@RequestParam(value = "username") String username){
+        return userRepository.findByName(username).getId();
+    }
+
+    @RequestMapping(value = "data/saveTag")
+    @ResponseBody
+    public void saveTag(@RequestParam(value = "name") String name,
+                        @RequestParam(value = "favor") String favor,
+                        @RequestParam(value = "intro") String intro,
+                        @RequestParam(value = "city") String city){
+        Foodtag tag = new Foodtag();
+        tag.setDescription(intro);
+        tag.setFavor(favor);
+        tag.setName(name);
+        tag.setCity(city);
+        tagRepository.save(tag);
+    }
 }
