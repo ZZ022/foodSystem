@@ -123,6 +123,7 @@ public class PostInfo {
         post.setLat(latitude);
         post.setLon(longtitude);
         post.setUsername(user.getName());
+        post.setSign(user.getSign());
         List<MediaFetch> paths = new ArrayList<MediaFetch>();
         for(int i=0;i<medias.size();i++){
             MediaFetch mediaFetch = new MediaFetch();

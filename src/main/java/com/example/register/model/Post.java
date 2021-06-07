@@ -8,6 +8,7 @@ import java.util.List;
 public class Post {
     private int id;
     private String username;
+    private String sign;
     private int likedNum;
     private String content;
     private String tag;
@@ -17,6 +18,14 @@ public class Post {
     private float lat;
 
     public Post(){}
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+
+    public String getSign() {
+        return sign;
+    }
 
     public void setDate(String date) {
         this.date = date;

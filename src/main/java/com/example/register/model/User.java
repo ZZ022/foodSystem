@@ -27,11 +27,19 @@ public class User {
 
 
     @OneToMany(targetEntity = PostInfo.class, cascade = CascadeType.ALL)
-    List<PostInfo> postInfos;
+    private List<PostInfo> postInfos;
 
     @OneToMany(targetEntity = LikedInfo.class, cascade = CascadeType.ALL)
-    List<LikedInfo> likedInfos;
+    private List<LikedInfo> likedInfos;
 
+    @Column(name = "exploration")
+    private int exploration=-1;
+
+    @Column(name = "professional")
+    private int professional=-1;
+
+    @Column(name = "sign")
+    private String sign="暂无";
 
     @Column(name = "password")
     private String password;
@@ -46,6 +54,14 @@ public class User {
         this.level = level;
         this.status = status;
         this.password = password;
+    }
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
     }
 
     public User(){
@@ -87,6 +103,30 @@ public class User {
 
     public void logout(){
         setStatus(false);
+    }
+
+    public void setExploration(int exploration) {
+        this.exploration = exploration;
+    }
+
+    public void setPostInfos(List<PostInfo> postInfos) {
+        this.postInfos = postInfos;
+    }
+
+    public void setProfessional(int professional) {
+        this.professional = professional;
+    }
+
+    public void setLikedInfos(List<LikedInfo> likedInfos) {
+        this.likedInfos = likedInfos;
+    }
+
+    public List<PostInfo> getPostInfos() {
+        return postInfos;
+    }
+
+    public int getProfessional() {
+        return professional;
     }
 
 

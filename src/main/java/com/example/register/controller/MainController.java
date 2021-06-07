@@ -50,6 +50,9 @@ public class MainController extends LoginController{
     @GetMapping("index")
     public String renderIndex(){return "index";}
 
+    @GetMapping("profile")
+    public String renderProfile(){return "profile";}
+
     @RequestMapping("data/logout")
     @ResponseBody
     public void logout(@RequestParam(value = "uid") int userId){
@@ -262,5 +265,48 @@ public class MainController extends LoginController{
         }
     }
 
+    @RequestMapping(value = "api/isLiked")
+    @ResponseBody
+    public boolean isLiked(@RequestParam(value = "uid") int uid, @RequestParam(value = "postid") int postid){
+        return likedRepository.existsByUserIdAndAndPostId(uid, postid);
+    }
+
+    @RequestMapping(value = "data/giveLike")
+    @ResponseBody
+    public int giveLike(@RequestParam(value = "uid") int uid){
+        return likedRepository.countByUserId(uid);
+    }
+
+    @RequestMapping(value = "data/username")
+    @ResponseBody
+    public String getUser(@RequestParam(value = "uid") int uid){
+        return userRepository.getById(uid).getName();
+    }
+
+    @RequestMapping(value = "data/getLike")
+    @ResponseBody
+    public int getLike(@RequestParam(value = "uid") int uid){
+        int res = 0;
+        List<PostInfo> posts = postInfoRepository.findAllByUser(userRepository.findById(uid));
+        for(int i=0;i<posts.size();i++){
+            res += likedRepository.countLikedInfosByPostId(posts.get(i).getnId());
+        }
+        return res;
+    }
+
+    @RequestMapping(value = "data/sign")
+    @ResponseBody
+    public String getSign(@RequestParam(value = "uid") int uid){
+        return userRepository.getById(uid).getSign();
+    }
+
+    @RequestMapping(value = "data/saveSign")
+    @ResponseBody
+    public boolean saveSign(@RequestParam(value = "uid") int uid, @RequestParam(value = "sign") String sign){
+        User user = userRepository.getById(uid);
+        user.setSign(sign);
+        userRepository.save(user);
+        return true;
+    }
 
 }
