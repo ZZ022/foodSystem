@@ -32,6 +32,10 @@ public class PostInfo {
     @OneToMany(targetEntity = CommentInfo.class, cascade = CascadeType.ALL)
     private List<CommentInfo> commentInfos;
 
+    public Foodtag getFoodtag() {
+        return foodtag;
+    }
+
     @ManyToOne(targetEntity = Foodtag.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "tagid")
     private Foodtag foodtag;

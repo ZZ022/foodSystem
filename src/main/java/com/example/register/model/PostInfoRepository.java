@@ -16,6 +16,7 @@ public interface PostInfoRepository extends JpaRepository<PostInfo, Integer> {
     List<PostInfo> findAllByUserOrderByDateDesc(User user);
     List<PostInfo> findAllByFoodtagOrderByDateDesc(Foodtag foodtag);
     List<PostInfo> findAllByFoodtag(Foodtag foodtag);
+
 //    @Query(value = "SELECT nId FROM T_postInfo", nativeQuery = true)
 //    PostInfoProjection findAllProjectedById();
 }

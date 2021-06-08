@@ -177,7 +177,7 @@ public class MainController extends LoginController{
         tagRepository.save(foodTag);
         if(hasMedia){
             for(int i=0;i<medias.length;i++){
-                String sourcePath =  "D:\\Desktop\\foodSystem\\src\\main\\resources\\";
+                String sourcePath =  System.getProperty("user.dir")+"\\src\\main\\resources\\";
                 String path = "media\\"+postInfo.getnId() + "_" + i +'.';
                 String originalFileName = medias[i].getOriginalFilename();
                 String fileType = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
@@ -282,7 +282,130 @@ public class MainController extends LoginController{
         return userRepository.getById(uid).getName();
     }
 
-    @RequestMapping(value = "data/likeRanked")
+    @RequestMapping(value = "data/getImages")
+    @ResponseBody
+    public String getImagesAndLocations(){
+        List<PostInfo> posts = postInfoRepository.findAll();
+        List<Foodtag> tags = tagRepository.findAll();
+//        存放所有的tag标签名
+//        List<String> tagName = new ArrayList<>();
+        int postSize = posts.size();
+        int tagSize = tags.size();
+        System.out.println(tagSize);
+        Map<Integer, Integer> map = new HashMap<>();
+//        获取tag与点赞数的map
+        for(int i=0;i<postSize;i++){
+//            判断帖子是否具有多媒体数据
+//            计算帖子的点赞数
+            if(mediaRepository.existsByPostInfo(postInfoRepository.findById(posts.get(i).getnId()).get())){
+                int likeNum = likedRepository.findAllByPostId(posts.get(i).getnId()).size();
+                map.put(posts.get(i).getnId(),likeNum);
+            }
+
+        }
+
+        //这里将map.entrySet()转换成list
+        List<Map.Entry<Integer,Integer>> list = new ArrayList<Map.Entry<Integer,Integer>>(map.entrySet());
+        //然后通过比较器来实现排序
+        Collections.sort(list,new Comparator<Map.Entry<Integer,Integer>>() {
+            //降序排序
+            public int compare(Map.Entry<Integer,Integer> n1,
+                               Map.Entry<Integer,Integer> n2) {
+                return n2.getValue()-n1.getValue();
+            }
+
+        });
+
+        System.out.println(list.toString());
+
+//        List<PostInfo> orderedPosts = postInfoRepository.findAllByOrderByLikedInfos();
+        int num = list.size();
+        List<String> rankInfos = new ArrayList();
+//        JSONObject rankedObject = new JSONObject();
+
+//        得到tag和对应图片的map
+        Map<String,String > map_tag = new HashMap<>();
+//        List<Map.Entry<Integer, Integer>> postRanked = list.subList(0,5);
+        for (Map.Entry<Integer,Integer> mapping:list) {
+            String tagName = postInfoRepository.findById(mapping.getKey()).get().getFoodtag().getName();
+            String image = mediaRepository.findByPostInfo(postInfoRepository.findById(mapping.getKey()).get()).getPath();
+            String city = tagRepository.findByName(tagName).getCity();
+            if(!map_tag.containsKey(tagName)){
+                map_tag.put(tagName,image);
+                rankInfos.add(tagName + "," + city + "," +image);
+            }
+//               rankedObject.put(userName,content);
+        }
+
+//
+        return rankInfos.toString();
+    }
+
+    @RequestMapping(value = "data/RankedTags")
+    @ResponseBody
+    public String getLikeRankedTags(){
+        List<PostInfo> posts = postInfoRepository.findAll();
+        List<Foodtag> tags = tagRepository.findAll();
+//        存放所有的tag标签名
+//        List<String> tagName = new ArrayList<>();
+        int postSize = posts.size();
+        int tagSize = tags.size();
+        System.out.println(tagSize);
+        Map<String, Integer> map = new HashMap<>();
+//        获取tag与点赞数的map
+        for(int i=0;i<postSize;i++){
+//            计算帖子的点赞数
+            int likeNum = likedRepository.findAllByPostId(posts.get(i).getnId()).size();
+            String tag = posts.get(i).getFoodtag().getName();
+            if(map.containsKey(tag)){
+                map.put(tag,map.get(tag)+likeNum);
+            }
+            else {
+                map.put(tag,likeNum);
+            }
+
+        }
+        //这里将map.entrySet()转换成list
+        List<Map.Entry<String, Integer>> list = new ArrayList<Map.Entry<String, Integer>>(map.entrySet());
+        //然后通过比较器来实现排序
+        Collections.sort(list,new Comparator<Map.Entry<String, Integer>>() {
+            //降序排序
+            public int compare(Map.Entry<String, Integer> n1,
+                               Map.Entry<String, Integer> n2) {
+                return n2.getValue()-n1.getValue();
+            }
+
+        });
+        System.out.println(list.toString());
+
+        int num = list.size();
+        List<String> rankInfos = new ArrayList();
+
+        if (num>2) {
+            List<Map.Entry<String, Integer>> tagRanked = list.subList(0,3);
+            for (Map.Entry<String, Integer> mapping:tagRanked) {
+                String city = tagRepository.findByName(mapping.getKey()).getCity();
+                rankInfos.add(mapping.getKey() + "," + city + "," +mapping.getValue());
+//                rankedObject.put(userName,content);
+            }
+
+
+        }
+        else if(num>0 && num<3){
+            List<Map.Entry<String, Integer>> postRanked = list.subList(0,num+1);
+
+            for(Map.Entry<String, Integer> mapping:postRanked){
+                String city = tagRepository.findByName(mapping.getKey()).getCity();
+                rankInfos.add(mapping.getKey() + "," + city + "," +mapping.getValue());
+
+            }
+        }
+
+
+        return rankInfos.toString();
+    }
+
+    @RequestMapping(value = "data/likeRankedPosts")
     @ResponseBody
     public String getLikeRanked(){
 //        这里尝试采用投影的做法来避免内存占用过大，but failed
@@ -312,7 +435,7 @@ public class MainController extends LoginController{
 //        List<PostInfo> orderedPosts = postInfoRepository.findAllByOrderByLikedInfos();
         int num = list.size();
         List<String> rankInfos = new ArrayList();
-        JSONObject rankedObject = new JSONObject();
+//        JSONObject rankedObject = new JSONObject();
 
         if (num>4) {
             List<Map.Entry<Integer, Integer>> postRanked = list.subList(0,5);
@@ -320,7 +443,7 @@ public class MainController extends LoginController{
                 String userName = postInfoRepository.findById(mapping.getKey()).get().getUser().getName();
                 String content = postInfoRepository.findById(mapping.getKey()).get().getContent();
                 rankInfos.add(userName + "," +content);
-                rankedObject.put(userName,content);
+//                rankedObject.put(userName,content);
             }
 
 
@@ -332,14 +455,14 @@ public class MainController extends LoginController{
                 String userName = postInfoRepository.findById(mapping.getKey()).get().getUser().getName();
                 String content = postInfoRepository.findById(mapping.getKey()).get().getContent();
                 rankInfos.add(userName + "," +content);
-                rankedObject.put(userName,content);
+//                rankedObject.put(userName,content);
 
             }
         }
 
 //
-        System.out.println(rankedObject);
-        return JSON.toJSONString(rankedObject);
+        System.out.println(rankInfos.toString());
+        return rankInfos.toString();
     }
 
     @RequestMapping(value = "data/getLike")

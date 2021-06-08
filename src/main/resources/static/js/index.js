@@ -432,6 +432,12 @@ function createtag1(){
     })
     closeDialog1();
 }
+
+function getDomByXpath(xpath) {
+    var result = document.evaluate(xpath, document, null, XPathResult.ANY_TYPE, null);
+    return result.iterateNext()
+}
+
 //-------------------------主程序区-------------------
 window.onbeforeunload = logout();
 login();
@@ -469,30 +475,52 @@ $.ajax({
 })
 
 $.ajax({
-    url:'data/likeRanked',
+    url:'data/likeRankedPosts',
     data:{"uid":uid},
     success:function (res) {
         // 获取到前五个点赞最多的list
         console.log(res)
-        // var keys = Object.keys(res);
-        // console.log(keys)
-        json = JSON.parse(res);
-        for (var key in json){
-            var value = json[key];
+        res = res.slice(1,-1);
+        arr = res.split(",");
+        var arrSize = arr.length;
+        for (var i=0; i<arrSize; i+=2){
             var rankedHtml ="<div class=\"d-flex align-items-center osahan-post-header mb-3 people-list\">\n" +
                 "                           <div class=\"dropdown-list-image mr-3\">\n" +
                 "                              <img class=\"rounded-circle\" src=\"img/p8.png\" alt=\"\">\n" +
                 "                              <div class=\"status-indicator bg-success\"></div>\n" +
                 "                           </div>\n" +
                 "                           <div class=\"font-weight-bold mr-2\">\n" +
-                "                              <div class=\"text-truncate\">" + key + "</div>\n" +
-                "                              <div class=\"small text-gray-500\">" + value + "</div>\n" +
+                "                              <div class=\"text-truncate\">" + arr[i] + "</div>\n" +
+                "                              <div class=\"small text-gray-500\">" + arr[i+1] + "</div>\n" +
                 "                           </div>\n" +
                 "                           <span class=\"ml-auto\"><button type=\"button\" class=\"btn btn-light btn-sm\"><i class=\"feather-chevron-right\"></i></button>\n" +
                 "                           </span>\n" +
                 "                        </div>"
 
             $('#rankedLike').append(rankedHtml);
+        }
+    }
+})
+
+$.ajax({
+    url:'data/RankedTags',
+    data:{"uid":uid},
+    success:function (res) {
+        // 获取到前五个点赞最多的list
+        console.log(res)
+        res = res.slice(1,-1);
+        arr = res.split(",");
+        var arrSize = arr.length;
+        var j=1;
+        for (var i=0; i<arrSize; i+=3){
+                // var name = getDomByXpath('html/body/div/div/div/main/div/div/div[4]/div/div/div/div['+ j+2 +']/a/div/div[1]/div/h6');
+                // console.log(name);
+                // var city = getDomByXpath('//*[@id="myTabContent"]/div[4]/div/div/div/div['+ j+2 +']/a/div/div[1]/div/div');
+                // var likeNum = getDomByXpath('//*[@id="myTabContent"]/div[4]/div/div/div/div['+ j+2 +']/a/div/div[2]/span');
+            $('#tagName1').textContent=arr[i];
+            $('#tagCity1').textContent = arr[i+1];
+            $('#like1').textContent = arr[i+2] + "点赞";
+
         }
     }
 })
