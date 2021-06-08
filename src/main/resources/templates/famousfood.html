@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <link rel="icon" type="image/png" href="img/fav.png">
+      <title>舌尖·明星美食</title>
+      <!-- Slick Slider -->
+      <link rel="stylesheet" type="text/css" href="vendor/slick/slick.min.css"/>
+      <link rel="stylesheet" type="text/css" href="vendor/slick/slick-theme.min.css"/>
+      <!-- Feather Icon-->
+      <link href="vendor/icons/feather.css" rel="stylesheet" type="text/css">
+      <!-- Bootstrap core CSS -->
+      <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+      <!-- Custom styles for this template -->
+      <link href="css/style.css" rel="stylesheet">
+      <link rel="stylesheet" href="./css/ol.css" type="text/css">
+      <style>
+         .map {
+           height: 580px;
+           width: 60%;
+           
+           position: relative;
+           float: left;
+         }
+         .xttblog{   
+            width: 40%;   
+            height: 580px;   
+            position: relative;   
+            float: left;  
+            overflow: auto;   
+         }   
+         .mylist li{
+            margin-bottom: 110px;
+         }
+         
+       </style>
+   </head>
+   <body>
+        <!-- 最上面的导航框 -->
+        <nav class="navbar navbar-expand navbar-dark bg-dark osahan-nav-top p-0">
+         <div class="container">
+
+            <!-- 点击logo刷新主页 -->
+            <a class="navbar-brand mr-2" href="index.html"><img src="img/logo.png" alt=""> 
+            </a>
+            <!-- 搜索框 -->
+            <form class="d-none d-sm-inline-block form-inline mr-auto my-2 my-md-0 mw-100 navbar-search">
+               <div class="input-group">
+                  <input type="text" class="form-control shadow-none border-0" placeholder="搜索明星美食..." aria-label="Search" aria-describedby="basic-addon2">
+                  <div class="input-group-append">
+                     <button class="btn" type="button">
+                     <i class="feather-search"></i>
+                     </button>
+                  </div>
+               </div>
+            </form> 
+
+            <ul class="navbar-nav ml-auto d-flex align-items-center">
+               <li class="nav-item dropdown no-arrow d-sm-none">
+                  <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="feather-search mr-2"></i>
+                  </a>
+                  <!-- Dropdown - Messages -->
+                  <div class="dropdown-menu dropdown-menu-right p-3 shadow-sm animated--grow-in" aria-labelledby="searchDropdown">
+                     <form class="form-inline mr-auto w-100 navbar-search">
+                        <div class="input-group">
+                           <input type="text" class="form-control border-0 shadow-none" placeholder="搜索用户、美食..." aria-label="Search" aria-describedby="basic-addon2">
+                           <div class="input-group-append">
+                              <button class="btn" type="button">
+                              <i class="feather-search"></i>
+                              </button>
+                           </div>
+                        </div>
+                     </form>
+                  </div>
+               </li>
+               <!-- 故事地图按钮 -->
+               <li class="nav-item">
+                  <a class="nav-link" href="jobs.html"><i class="feather-briefcase mr-2"></i><span class="d-none d-lg-inline">故事地图</span></a>
+               </li>
+                <!-- 美食文化差异按钮 -->
+               <li class="nav-item">
+                  <a class="nav-link" href="connection.html"><i class="feather-users mr-2"></i><span class="d-none d-lg-inline">饮食文化差异</span></a>
+               </li>
+                <!-- 明星美食按钮 -->
+               <li class="nav-item dropdown mr-2">
+                  <a class="nav-link" href="#"><i class="feather-users mr-2"></i><span class="d-none d-lg-inline">明星美食</span></a>
+               </li>
+
+
+               <!-- 消息中心 -->
+               <li class="nav-item dropdown no-arrow mx-1 osahan-list-dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     <i class="feather-message-square"></i>
+                     <!-- 未读消息数 -->
+                     <span class="badge badge-danger badge-counter">8</span>
+                  </a>
+                  <!-- 其他部分 -->
+                  <div class="dropdown-list dropdown-menu dropdown-menu-right shadow-sm">
+                     <h6 class="dropdown-header">消息中心</h6>
+                     <!--具体消息内容1-->
+                     <a class="dropdown-item d-flex align-items-center" href="#">
+                        <div class="dropdown-list-image mr-3">
+                           <img class="rounded-circle" src="img/p1.png" alt="">
+                           <div class="status-indicator bg-success"></div>
+                        </div>
+                        <div class="font-weight-bold overflow-hidden">
+                           <div class="small text-gray-500">小明  刚刚</div>
+                           <div class="text-truncate">今天晚上一起去尝尝？</div>
+                        </div>
+                     </a>
+                     <!--具体消息内容2-->
+                     <a class="dropdown-item d-flex align-items-center" href="#">
+                        <div class="dropdown-list-image mr-3">
+                           <img class="rounded-circle" src="img/p2.png" alt="">
+                           <div class="status-indicator"></div>
+                        </div>
+                        <div class="overflow-hidden">
+                           <div class="small text-gray-500">小红  两分钟前</div>
+                           <div class="text-truncate">那家粉好吃吗</div>
+                        </div>
+                     </a>
+                     <!--具体消息内容3-->
+                     <a class="dropdown-item d-flex align-items-center" href="#">
+                        <div class="dropdown-list-image mr-3">
+                           <img class="rounded-circle" src="img/p3.png" alt="">
+                           <div class="status-indicator bg-warning"></div>
+                        </div>
+                        <div class="overflow-hidden">
+                           <div class="small text-gray-500">小亮  16:04</div>
+                           <div class="text-truncate">你不来我也不去了</div>
+                        </div>
+                     </a>
+                     <!--具体消息内容4-->
+                     <a class="dropdown-item d-flex align-items-center" href="#">
+                        <div class="dropdown-list-image mr-3">
+                           <img class="rounded-circle" src="img/p4.png" alt="">
+                           <div class="status-indicator bg-success"></div>
+                        </div>
+                        <div class="overflow-hidden">
+                           <div class="small text-gray-500">佳佳  5月21日18:24</div>
+                           <div class="text-truncate">快回消息！</div>
+                        </div>
+                     </a>
+                     <!--更多消息-->
+                     <a class="dropdown-item text-center small text-gray-500" href="#">更多消息</a>
+                  </div>
+               </li>
+
+               <!-- 系统提醒 -->
+               <li class="nav-item dropdown no-arrow mx-1 osahan-list-dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     <i class="feather-bell"></i>
+                     <!-- 未读数目 -->
+                     <span class="badge badge-info badge-counter">6</span>
+                  </a>
+                  <!-- 其他部分 -->
+                  <div class="dropdown-list dropdown-menu dropdown-menu-right shadow-sm">
+                     <h6 class="dropdown-header">
+                        系统提醒
+                     </h6>
+                     <!-- 具体提醒内容1 -->
+                     <a class="dropdown-item d-flex align-items-center" href="#">
+                        <div class="mr-3">
+                           <div class="icon-circle bg-primary">
+                              <i class="feather-download-cloud text-white"></i>
+                           </div>
+                        </div>
+                        <div>
+                           <div class="small text-gray-500">5月6日20:05</div>
+                           <span class="font-weight-bold">故事地图更新了，快来看看吧！</span>
+                        </div>
+                     </a>
+                     <!-- 具体提醒内容2 -->
+                     <a class="dropdown-item d-flex align-items-center" href="#">
+                        <div class="mr-3">
+                           <div class="icon-circle bg-success">
+                              <i class="feather-edit text-white"></i>
+                           </div>
+                        </div>
+                        <div>
+                           <div class="small text-gray-500">4月26日9:23</div>
+                            系统更新提醒
+                        </div>
+                     </a>
+                     <!-- 具体提醒内容3 -->
+                     <a class="dropdown-item d-flex align-items-center" href="#">
+                        <div class="mr-3">
+                           <div class="icon-circle bg-warning">
+                              <i class="feather-folder text-white"></i>
+                           </div>
+                        </div>
+                        <div>
+                           <div class="small text-gray-500">4月6日15：46</div>
+                           你有一个新礼物请查收~
+                        </div>
+                     </a>
+                     <!-- 更多提醒 -->
+                     <a class="dropdown-item text-center small text-gray-500" href="#">更多提醒</a>
+                  </div>
+               </li>
+
+               <!-- 个人中心 -->
+               <li class="nav-item dropdown no-arrow ml-1 osahan-profile-dropdown">
+                  <a class="nav-link dropdown-toggle pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <img class="img-profile rounded-circle" src="img/p13.png">
+                  </a>
+                  <!-- Dropdown - User Information -->
+                  <div class="dropdown-menu dropdown-menu-right shadow-sm">
+                     <div class="p-3 d-flex align-items-center">
+                        <div class="dropdown-list-image mr-3">
+                           <img class="rounded-circle" src="img/user.png" alt="">
+                           <div class="status-indicator bg-success"></div>
+                        </div>
+                        <div class="font-weight-bold">
+                           <div class="text-truncate">暴躁吃货</div>
+                           <div class="small text-gray-500">我天天就想吃吃不胖~</div>
+                        </div>
+                     </div>
+                     <div class="dropdown-divider"></div>
+                     <a class="dropdown-item" href="profile.html"><i class="feather-user mr-1"></i> 个人主页</a>
+                     <a class="dropdown-item" href="sign-in.html"><i class="feather-log-out mr-1"></i> 退出登录</a>
+                  </div>
+               </li>
+            </ul>
+         </div>
+      </nav>
+
+      
+
+      <div class="xttblog">  
+         
+          
+            <div id="container">
+               <div id="list" >    
+                  <!-- <a href="food.html"><img src="../img/food1.jpg" style="width: 180px;height: 180px;object-fit: cover;" alt="1"/></a> -->
+                  
+                  <!-- <img src="../img/food2.jpg" style="width: 180px;height: 180px;object-fit: cover;" alt="3"/>
+                  <img src="../img/food3.jpg" style="width: 180px;height: 180px;object-fit: cover;" alt="4"/>
+                  <img src="../img/food4.jpg" style="width: 180px;height: 180px;object-fit: cover;" alt="5"/>     
+                  <img src="../img/food5.jpg" style="width: 180px;height: 180px;object-fit: cover;" alt="6"/>
+                  <img src="../img/food6.jpg" style="width: 180px;height: 180px;object-fit: cover;" alt="7"/>
+                  <img src="../img/food7.jpg" style="width: 180px;height: 180px;object-fit: cover;" alt="8"/>
+                  <img src="../img/food8.jpg" style="width: 180px;height: 180px;object-fit: cover;" alt="9"/>
+                  <img src="../img/food9.jpg" style="width: 180px;height: 180px;object-fit: cover;" alt="10"/>
+                  <img src="../img/food10.jpg" style="width: 180px;height: 180px;object-fit: cover;" alt="11"/>
+                  <img src="../img/food11.jpg" style="width: 180px;height: 180px;object-fit: cover;" alt="12"/>
+                  <img src="../img/food12.jpg" style="width: 180px;height: 180px;object-fit: cover;" alt="13"/>
+                  <img src="../img/food13.jpg" style="width: 180px;height: 180px;object-fit: cover;" alt="14"/>
+                  <img src="../img/food14.jpg" style="width: 180px;height: 180px;object-fit: cover;" alt="15"/> 
+                  <img src="../img/food15.jpg" style="width: 180px;height: 180px;object-fit: cover;" alt="15"/>  -->
+               </div>
+            
+            </div>  
+      </div> 
+      <div id="map" class="map"></div>
+      
+      
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+      <!-- Bootstrap core JavaScript -->
+      <script src="vendor/jquery/jquery.min.js"></script>
+      <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+      <!-- slick Slider JS-->
+      <script type="text/javascript" src="vendor/slick/slick.min.js"></script>
+      <!-- Custom scripts for all pages-->
+      <script src="js/osahan.js"></script>
+   </body>
+   <script src="./build/ol.js"></script>
+   <script type="text/javascript" src='./js/famousfood.js'></script>
+</html>

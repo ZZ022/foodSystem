@@ -345,7 +345,7 @@ public class MainController extends LoginController{
         for (Map.Entry<Integer,Integer> mapping:list) {
             String tagName = postInfoRepository.findById(mapping.getKey()).get().getFoodtag().getName();
             String image = mediaRepository.findByPostInfo(postInfoRepository.findById(mapping.getKey()).get()).getPath();
-            String city = tagRepository.findByName(tagName).getCity();
+            String city = tagRepository.findByName(tagName).getCity().getName();
             if(!map_tag.containsKey(tagName)){
                 map_tag.put(tagName,image);
                 rankInfos.add(tagName + "," + city + "," +image);
@@ -400,7 +400,7 @@ public class MainController extends LoginController{
         if (num>2) {
             List<Map.Entry<String, Integer>> tagRanked = list.subList(0,3);
             for (Map.Entry<String, Integer> mapping:tagRanked) {
-                String city = tagRepository.findByName(mapping.getKey()).getCity();
+                String city = tagRepository.findByName(mapping.getKey()).getCity().getName();
                 rankInfos.add(mapping.getKey() + "," + city + "," +mapping.getValue());
 //                rankedObject.put(userName,content);
             }
@@ -411,7 +411,7 @@ public class MainController extends LoginController{
             List<Map.Entry<String, Integer>> postRanked = list.subList(0,num+1);
 
             for(Map.Entry<String, Integer> mapping:postRanked){
-                String city = tagRepository.findByName(mapping.getKey()).getCity();
+                String city = tagRepository.findByName(mapping.getKey()).getCity().getName();
                 rankInfos.add(mapping.getKey() + "," + city + "," +mapping.getValue());
 
             }
