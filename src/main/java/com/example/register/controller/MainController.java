@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.register.model.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @Controller
@@ -20,6 +21,9 @@ public class MainController extends LoginController{
 
     @Autowired
     private TagRepository tagRepository;
+
+    @Autowired
+    private CityRepository cityRepository;
 
     @Autowired
     private MediaRepository mediaRepository;
@@ -46,11 +50,20 @@ public class MainController extends LoginController{
     @GetMapping("post")
     public String renderPost(){return "post";}
 
+    @GetMapping("foodMap")
+    public String renderFoodMap(){return "food_index_maps";}
+
     @GetMapping("index")
     public String renderIndex(){return "index";}
 
     @GetMapping("profile")
     public String renderProfile(){return "profile";}
+
+    @GetMapping("form")
+    public String renderForm(){return "form";}
+
+    @GetMapping("index1")
+    public String renderIndex1(){return "index1";}
 
     @RequestMapping("data/logout")
     @ResponseBody
@@ -95,15 +108,17 @@ public class MainController extends LoginController{
     @ResponseBody
     public PostFetch sendPost(@RequestParam(value = "start") int s, @RequestParam(value = "num") int n){
         List<PostInfo> posts=postInfoRepository.findAllByOrderByDateDesc();
+        System.out.println(posts.size());
         PostFetch res = new PostFetch();
         if(s+n>=posts.size()){
             List<Post> postFetches = new ArrayList<>();
             for(int i=s;i<posts.size();i++){
+                System.out.println(posts.toString());
                 postFetches.add(posts.get(i).getPost());
             }
             res.setPosts(postFetches);
             res.setEnd(true);
-            System.out.println(res);
+            System.out.println(res.toString());
             return res;
         }
         else {
@@ -177,7 +192,7 @@ public class MainController extends LoginController{
         tagRepository.save(foodTag);
         if(hasMedia){
             for(int i=0;i<medias.length;i++){
-                String sourcePath =  "D:\\Desktop\\foodSystem\\src\\main\\resources\\";
+                String sourcePath =  System.getProperty("user.dir")+"\\src\\main\\resources\\";;
                 String path = "media\\"+postInfo.getnId() + "_" + i +'.';
                 String originalFileName = medias[i].getOriginalFilename();
                 String fileType = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
@@ -194,6 +209,7 @@ public class MainController extends LoginController{
                     localMedias.add(media);
                 }
                 catch (Exception e){
+                    System.out.println(e);
                     return false;
                 }
             }
@@ -311,22 +327,25 @@ public class MainController extends LoginController{
 
 //        List<PostInfo> orderedPosts = postInfoRepository.findAllByOrderByLikedInfos();
         int num = list.size();
+        System.out.println(num);
         List<String> rankInfos = new ArrayList();
         JSONObject rankedObject = new JSONObject();
 
         if (num>4) {
             List<Map.Entry<Integer, Integer>> postRanked = list.subList(0,5);
+            System.out.println(postRanked.size());
             for (Map.Entry<Integer,Integer> mapping:postRanked) {
                 String userName = postInfoRepository.findById(mapping.getKey()).get().getUser().getName();
                 String content = postInfoRepository.findById(mapping.getKey()).get().getContent();
                 rankInfos.add(userName + "," +content);
                 rankedObject.put(userName,content);
+                System.out.println(rankedObject.toString());
             }
 
 
         }
         else if(num>0 && num<5){
-            List<Map.Entry<Integer, Integer>> postRanked = list.subList(0,num+1);
+            List<Map.Entry<Integer, Integer>> postRanked = list.subList(0,num);
 
             for(Map.Entry<Integer,Integer> mapping:postRanked){
                 String userName = postInfoRepository.findById(mapping.getKey()).get().getUser().getName();
@@ -392,15 +411,63 @@ public class MainController extends LoginController{
 
     @RequestMapping(value = "data/saveTag")
     @ResponseBody
-    public void saveTag(@RequestParam(value = "name") String name,
+    public boolean saveTag(@RequestParam(value = "name") String name,
                         @RequestParam(value = "favor") String favor,
                         @RequestParam(value = "intro") String intro,
                         @RequestParam(value = "city") String city){
-        Foodtag tag = new Foodtag();
-        tag.setDescription(intro);
-        tag.setFavor(favor);
-        tag.setName(name);
-        tag.setCity(city);
-        tagRepository.save(tag);
+        if(!cityRepository.existsByName(city)){
+            return false;
+        }
+        else {
+            Foodtag tag = new Foodtag();
+            tag.setDescription(intro);
+            tag.setFavor(favor);
+            tag.setName(name);
+            tag.setCity(cityRepository.getByName(city));
+            tagRepository.save(tag);
+            return true;
+        }
+    }
+
+    @RequestMapping(value = "data/saveCity")
+    @ResponseBody
+    public void saveCity(@RequestParam(value = "name") String name, @RequestParam(value = "lng") float lng
+    ,@RequestParam(value = "lat") float lat){
+        City  city = new City();
+        city.setLat(lat);
+        city.setLng(lng);
+        city.setName(name);
+        cityRepository.save(city);
+    }
+
+    @RequestMapping(value = "data/hasCity")
+    @ResponseBody
+    public boolean hasCity(){
+        return cityRepository.findAll().size()==0;
+    }
+
+    @RequestMapping(value = "data/recommend")
+    @ResponseBody
+    public List<String> recommend(){
+        System.out.println("recommending");
+        List<Foodtag> foodTags = tagRepository.findAll();
+        int n = Integer.min(4,foodTags.size());
+        ArrayList<Integer> idxs = new ArrayList<>();
+        List<String> res = new ArrayList<>();
+        Random random = new Random();
+        for (int i=0;i<n;i++){
+//            int rd = (int)(Math.random()*foodTags.size());
+            int rd = random.nextInt(foodTags.size());
+            System.out.println(rd);
+            if (!idxs.contains(rd)){
+                res.add(foodTags.get(rd).getName());
+                idxs.add(rd);
+            }
+            else {
+                i--;
+            }
+        }
+        return res;
     }
 }
+

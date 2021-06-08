@@ -1,5 +1,9 @@
 const searchParams = new URLSearchParams(new URL(location.href).search);
 const uid = Number(searchParams.get('uid'));
+console.log(uid);
+if(uid==0){
+    location.href="login";
+}
 const btnAddTag = $('#addTag');
 const selectTag = "selectTag"
 var postNum = 100;
@@ -149,8 +153,9 @@ function searchByUserOrTag(content) {
             url:"data/search",
             type:"post",
             data:{"content":content},
+            async:false,
             success:function(res){
-                console.log(res);
+                postSet = res.posts;
                 // 考虑怎样将帖子动态链接到页面中
             }
         }
@@ -182,12 +187,15 @@ function viewMore(){
     moreId += 1;
     if(postIdx<postNum){
         for(var i=0;i<maxPostNum;i++){
+            if(i+postIdx>=postSet.length){
+                break;
+            }
             $('#{0}'.format('postArea2')).append(showPostHtml(postSet[i+postIdx]));
         }
         postIdx += maxPostNum;
         if(postIdx<postNum){
             $('#postArea2').append(
-                '<button id="btnMorePost{0}" onclick="viewMore()">浏览更多</button>'.format(moreId)
+                '<button id="btnMorePost{0}" class="btn btn-primary btn-sm" onclick="viewMore()">浏览更多</button>'.format(moreId)
             );
         }
     }
@@ -258,7 +266,7 @@ function Like(postId){
 
 
 // 搜索框，实现根据content搜索用户表-->美食tag表，并返回相应的帖子显示
-function searchByUserOrTag(content) {
+function searchByUserOrTag2(content) {
     $.ajax(
         {
             url:"data/isTag",
@@ -281,11 +289,11 @@ function search(content) {
             data:{"content":content},
             async:false,
             success:function(res){
+                console.log("res={0}".format(res));
                 switch (res){
                     case 1:
                         searchByUserOrTag(content);
-                        $('#postArea1').html('');
-                        $('#postArea2').html('');
+                        console.log("rendering");
                         renderPost();
                         break;
                     case 0:
@@ -360,17 +368,24 @@ function updatedCount(postId){
 }
 
 function renderPost(){
-    $('#{0}'.format('postArea1')).append(showPostHtml(postSet[0]));
-    postIdx = 1;
-    if(postIdx<postNum){
-        for(var i=0;i<maxPostNum;i++){
-            $('#{0}'.format('postArea2')).append(showPostHtml(postSet[i+postIdx]));
-        }
-        postIdx += maxPostNum;
+    $('#postArea1').html('');
+    $('#postArea2').html('');
+    if(postSet.length!=0){
+        $('#{0}'.format('postArea1')).append(showPostHtml(postSet[0]));
+        postIdx = 1;
         if(postIdx<postNum){
-            $('#postArea2').append(
-                '<button id="btnMorePost{0}" onclick="viewMore()">浏览更多</button>'.format(moreId)
-            );
+            for(var i=0;i<maxPostNum;i++){
+                if(i+postIdx>=postSet.length){
+                    break;
+                }
+                $('#{0}'.format('postArea2')).append(showPostHtml(postSet[i+postIdx]));
+            }
+            postIdx += maxPostNum;
+            if(postIdx<postNum){
+                $('#postArea2').append(
+                    '<button id="btnMorePost{0}" class="btn btn-primary btn-sm" onclick="viewMore()">浏览更多</button>'.format(moreId)
+                );
+            }
         }
     }
 }
@@ -428,9 +443,17 @@ function createtag1(){
         url:'data/saveTag',
         data:{
             "name":name,"city":city,"favor":favor,"intro":intro
+        },
+        success:function (res) {
+            if(res){
+                closeDialog1();
+            }
+            else {
+                alert("该城市不存在");
+            }
         }
     })
-    closeDialog1();
+
 }
 //-------------------------主程序区-------------------
 window.onbeforeunload = logout();
@@ -505,9 +528,10 @@ $('#btnSendPost').click(function (){
     let content = $('#sendArea').val();
     if(tag!=''){
         submitPost(uid, content, tag, lat, lng, imgFile)
-        $('#sendArea').val('');
         $('#iptAddImage').val('');
-        $('#mediaArea').html('');
+        $('#tagChoose').html('');
+        tag = '';
+        $('#mediaArea').html('<textarea placeholder="我想分享..." class="form-control border-0 p-0 shadow-none" rows="3" id="sendArea"></textarea>');
     }
     else {
         alert("请选择标签");
@@ -535,17 +559,6 @@ fetchPost(0, postNum);
 renderPost();
 $('#hrefToProfile').attr('href', 'profile?uid={0}&vid={0}'.format(uid));
 
-// fetchPost(0,1);
-// if(!isPostEnd){
-//     fetchPost(postIdx, postNum, 'postArea2');
-//     if(!isPostEnd){
-//         $('#postArea2').append(
-//             '<button id="btnMorePost" onclick="viewMore()">浏览更多</button>'
-//         );
-//         postIdx += postNum;
-//     }
-// }
-// 搜索按钮
 $('#btnSearch').click(function () {
     var content = $('#search_input').val();
     // console.log(content);
@@ -553,24 +566,6 @@ $('#btnSearch').click(function () {
     search(content);
 })
 
-//点赞,获取postId，userId和目前postId的点赞个数
-// $('#like').click(function () {
-//     // var likeNums = document.getElementById("like").innerText;
-//     // 模拟从前端元素获取到的用户和帖子编号
-//     var postId = 1;
-//     var userId = uid;
-//     // 实现将该点赞数据存入数据库的动作
-//     var flag = saveLikedToDB(postId,userId);
-//     if(flag !== false){
-//         // 实现根据postid获取更新后的点赞数
-//         var numUpdated = updatedCount(postId);
-//     }
-//     else {
-//         alert("服务器异常，点赞失败！");
-//     }
-//     document.getElementById("like").innerText = numUpdated.toString();
-//
-// })
 $('#like').click(function () {
     // var likeNums = document.getElementById("like").innerText;
     // 模拟从前端元素获取到的用户和帖子编号
@@ -586,5 +581,23 @@ $('#like').click(function () {
         alert("服务器异常，点赞失败！");
     }
     document.getElementById("like").innerText = numUpdated + "";
-
 })
+
+$.ajax({
+    url:'data/recommend',
+    success: function (res){
+        console.log(res);
+        htmlTemplate = '                     <div class="shadow-sm border rounded bg-white job-item mb-3">\n' +
+            '                        <div class="p-3 border-bottom">\n' +
+            '                        <h6 class="font-weight-bold text-gold" >{0}</h6><button onclick=search("{0}")>相关帖子</button>\n' +
+            '                        </div>\n' +
+            '                     </div>'
+        for(var i=0;i<res.length;i++){
+            console.log(htmlTemplate.format(String(res[i])));
+            $('#divRecommend').append(htmlTemplate.format(String(res[i])));
+        }
+
+
+    }
+})
+

@@ -9,4 +9,6 @@ public interface LikedRepository extends JpaRepository<LikedInfo,Integer> {
     public boolean existsByUserIdAndAndPostId(int userid, int postId);
     public int countByUserId(int userid);
     public List<LikedInfo> findAllByPostId(int PostId);
+
+    List<LikedInfo> findAllByUserId(int userId);
 }

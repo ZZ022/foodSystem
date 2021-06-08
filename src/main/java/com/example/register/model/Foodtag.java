@@ -14,8 +14,9 @@ public class Foodtag {
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 
-    @Column(name = "city",nullable = false)
-    private String city;
+    @ManyToOne(targetEntity = City.class)
+    @JoinColumn(name = "city",nullable = false)
+    City city;
 
     @OneToMany(targetEntity = PostInfo.class, cascade = CascadeType.ALL)
     private List<PostInfo> postInfos = new ArrayList<>();
@@ -58,11 +59,11 @@ public class Foodtag {
         return postInfos;
     }
 
-    public void setCity(String city) {
+    public void setCity(City city) {
         this.city = city;
     }
 
-    public String getCity() {
+    public City getCity() {
         return city;
     }
 

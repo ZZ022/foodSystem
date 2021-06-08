@@ -1,6 +1,9 @@
 const searchParams = new URLSearchParams(new URL(location.href).search);
 const uid = Number(searchParams.get('uid'));
 const vid = Number(searchParams.get('vid'));
+if(uid==0|vid==0){
+    location.href="login";
+}
 var username;
 var postNum = 100;
 var postSet = [];
