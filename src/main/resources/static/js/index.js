@@ -142,6 +142,22 @@ function submitPost(userId,content, tag, lat, lng, medias){
     })
 }
 
+// 搜索框，实现根据content搜索用户表-->美食tag表，并返回相应的帖子显示
+function searchByUserOrTag(content) {
+    $.ajax(
+        {
+            url:"data/search",
+            type:"post",
+            data:{"content":content},
+            success:function(res){
+                console.log(res);
+                // 考虑怎样将帖子动态链接到页面中
+            }
+        }
+    )
+}
+
+
 
 
 //向后台获取帖子信息，s为开始位置，n为请求帖子数
@@ -451,6 +467,36 @@ $.ajax({
         $('#textUser1').html(res);
     }
 })
+
+$.ajax({
+    url:'data/likeRanked',
+    data:{"uid":uid},
+    success:function (res) {
+        // 获取到前五个点赞最多的list
+        console.log(res)
+        // var keys = Object.keys(res);
+        // console.log(keys)
+        json = JSON.parse(res);
+        for (var key in json){
+            var value = json[key];
+            var rankedHtml ="<div class=\"d-flex align-items-center osahan-post-header mb-3 people-list\">\n" +
+                "                           <div class=\"dropdown-list-image mr-3\">\n" +
+                "                              <img class=\"rounded-circle\" src=\"img/p8.png\" alt=\"\">\n" +
+                "                              <div class=\"status-indicator bg-success\"></div>\n" +
+                "                           </div>\n" +
+                "                           <div class=\"font-weight-bold mr-2\">\n" +
+                "                              <div class=\"text-truncate\">" + key + "</div>\n" +
+                "                              <div class=\"small text-gray-500\">" + value + "</div>\n" +
+                "                           </div>\n" +
+                "                           <span class=\"ml-auto\"><button type=\"button\" class=\"btn btn-light btn-sm\"><i class=\"feather-chevron-right\"></i></button>\n" +
+                "                           </span>\n" +
+                "                        </div>"
+
+            $('#rankedLike').append(rankedHtml);
+        }
+    }
+})
+
 $('#btnSendPost').click(function (){
     console.log('sending');
     // let tag = $('#'+selectTag).val();
@@ -525,3 +571,20 @@ $('#btnSearch').click(function () {
 //     document.getElementById("like").innerText = numUpdated.toString();
 //
 // })
+$('#like').click(function () {
+    // var likeNums = document.getElementById("like").innerText;
+    // 模拟从前端元素获取到的用户和帖子编号
+    var postId = 1;
+    var userId = uid;
+    // 实现将该点赞数据存入数据库的动作
+    var flag = saveLikedToDB(postId,userId);
+    if(flag !== false){
+        // 实现根据postid获取更新后的点赞数
+        var numUpdated = updatedCount(postId);
+    }
+    else {
+        alert("服务器异常，点赞失败！");
+    }
+    document.getElementById("like").innerText = numUpdated + "";
+
+})

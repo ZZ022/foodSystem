@@ -1,5 +1,7 @@
 package com.example.register.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.register.model.PostInfo;
 import com.example.register.model.PostInfoRepository;
 import java.io.File;
@@ -9,10 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.register.model.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class MainController extends LoginController{
@@ -178,7 +177,7 @@ public class MainController extends LoginController{
         tagRepository.save(foodTag);
         if(hasMedia){
             for(int i=0;i<medias.length;i++){
-                String sourcePath =  "E:\\课程\\大三下\\gis工程\\实习\\foodSystem\\src\\main\\resources\\";
+                String sourcePath =  "D:\\Desktop\\foodSystem\\src\\main\\resources\\";
                 String path = "media\\"+postInfo.getnId() + "_" + i +'.';
                 String originalFileName = medias[i].getOriginalFilename();
                 String fileType = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
@@ -281,6 +280,66 @@ public class MainController extends LoginController{
     @ResponseBody
     public String getUser(@RequestParam(value = "uid") int uid){
         return userRepository.getById(uid).getName();
+    }
+
+    @RequestMapping(value = "data/likeRanked")
+    @ResponseBody
+    public String getLikeRanked(){
+//        这里尝试采用投影的做法来避免内存占用过大，but failed
+//        List<PostInfo> postIds = (List<PostInfo>) postInfoRepository.findAllProjectedById();
+        List<PostInfo> postIds = postInfoRepository.findAll();
+        int postSize = postIds.size();
+        System.out.println(postSize);
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int i=0;i<postSize;i++){
+            int likeNum = likedRepository.findAllByPostId(postIds.get(i).getnId()).size();
+            map.put(postIds.get(i).getnId(),likeNum);
+        }
+        //这里将map.entrySet()转换成list
+        List<Map.Entry<Integer,Integer>> list = new ArrayList<Map.Entry<Integer,Integer>>(map.entrySet());
+        //然后通过比较器来实现排序
+        Collections.sort(list,new Comparator<Map.Entry<Integer,Integer>>() {
+            //降序排序
+            public int compare(Map.Entry<Integer,Integer> n1,
+                               Map.Entry<Integer,Integer> n2) {
+                return n2.getValue()-n1.getValue();
+            }
+
+        });
+
+        System.out.println(list.toString());
+
+//        List<PostInfo> orderedPosts = postInfoRepository.findAllByOrderByLikedInfos();
+        int num = list.size();
+        List<String> rankInfos = new ArrayList();
+        JSONObject rankedObject = new JSONObject();
+
+        if (num>4) {
+            List<Map.Entry<Integer, Integer>> postRanked = list.subList(0,5);
+            for (Map.Entry<Integer,Integer> mapping:postRanked) {
+                String userName = postInfoRepository.findById(mapping.getKey()).get().getUser().getName();
+                String content = postInfoRepository.findById(mapping.getKey()).get().getContent();
+                rankInfos.add(userName + "," +content);
+                rankedObject.put(userName,content);
+            }
+
+
+        }
+        else if(num>0 && num<5){
+            List<Map.Entry<Integer, Integer>> postRanked = list.subList(0,num+1);
+
+            for(Map.Entry<Integer,Integer> mapping:postRanked){
+                String userName = postInfoRepository.findById(mapping.getKey()).get().getUser().getName();
+                String content = postInfoRepository.findById(mapping.getKey()).get().getContent();
+                rankInfos.add(userName + "," +content);
+                rankedObject.put(userName,content);
+
+            }
+        }
+
+//
+        System.out.println(rankedObject);
+        return JSON.toJSONString(rankedObject);
     }
 
     @RequestMapping(value = "data/getLike")

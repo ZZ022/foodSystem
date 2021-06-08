@@ -46,6 +46,11 @@ public class PostInfo {
     @JoinColumn
     private List<Media> medias;
 
+//   Spring Data JPA 投影查询 定义Projection接口类
+    public interface PostInfoProjection {
+        String getPostId();
+    }
+
 
     public PostInfo(){};
 
