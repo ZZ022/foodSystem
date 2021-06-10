@@ -138,7 +138,7 @@
           <img class="d-block w-100" src="img/food.png" width="100%"></img>
           <div class="container">
             <div class="carousel-caption text-start">
-              <h1 style="text-shadow: 0 0.5px black, 0.5px 0 black, -0.5px 0 black, 0 -0.5px black;">舌尖精选</h1>
+              <h1 style="font-size: 40px;font: weight 3px; text-shadow: 0 0.5px black, 0.5px 0 black, -0.5px 0 black, 0 -0.5px black;">舌尖精选</h1>
               <p>呈现您可能感兴趣的美食与其承载的文化</p>
               <p><a class="btn btn-lg btn-primary" href="#">现在填表</a></p>
             </div>
@@ -149,7 +149,7 @@
         <img class="d-block w-100" src="img/hotpot.png" width="100%"></img>
         <div class="container">
           <div class="carousel-caption">
-            <h1>一个浏览、发布、交流美食资讯的平台</h1>
+            <h1 style="text-shadow: 0 0.5px black, 0.5px 0 black, -0.5px 0 black, 0 -0.5px black;font-size: 32px;">一个浏览、发布、交流美食资讯的平台</h1>
             <p>欢迎使用舌尖系统进行美食分享与交流</p>
             <p><a class="btn btn-lg btn-primary" href="#">了解更多</a></p>
           </div>
@@ -160,7 +160,7 @@
         <img class="d-block w-100" src="img/zongzi.png" width="100%"></img>
         <div class="container">
           <div class="carousel-caption text-end">
-            <h1>三维模式</h1>
+            <h1 style="text-shadow: 0 0.5px black, 0.5px 0 black, -0.5px 0 black, 0 -0.5px black;font-size: 40px;">三维模式</h1>
             <p>进入Cesium的世界浏览美食</p>
             <p><a class="btn btn-lg btn-primary" href="#">浏览三维</a></p>
           </div>
@@ -368,22 +368,6 @@
               viewer.clock.onTick.removeEventListener(onTickCallback);
         
             }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
-            // var viewer = new Cesium.Viewer('cesiumContainer', {
-            //   navigationHelpButton: false,
-            //   timeline: false,
-            //   animation: false,
-            //   fullscreenButton: false,
-            //   imageryProvider : Cesium.createTileMapServiceImageryProvider({
-            //     url : Cesium.buildModuleUrl('Assets/Textures/NaturalEarthII')
-            //   }),
-            //   baseLayerPicker : false,
-            //   geocoder: false,
-            //   // sceneMode: Cesium.SceneMode.COLUMBUS_VIEW,
-            //   creditContainer: 'cesium-logo'
-            // })
-        
-            // viewer.extend(Cesium.viewerCesiumNavigationMixin, {})
-        
 
         
             viewer.camera.flyTo({
@@ -410,13 +394,23 @@
         </div>
         <div class="col-md-5">
           <!-- <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"/><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg> -->
-        <img src='img/bjky.jpg' width="100%">
-		烤鸭是具有世界声誉的北京著名菜式，起源于中国南北朝时期，《食珍录》中已记有炙鸭，在当时是宫廷食品。用料为优质肉食鸭北京鸭，果木炭火烤制，色泽红润，肉质肥而不腻，外脆里嫩。北京烤鸭分为两大流派，而北京最著名的烤鸭店也即是两派的代表。它以色泽红艳，肉质细嫩，味道醇厚，肥而不腻的特色，被誉为“天下美味”。
 		<div id="graph" style="height: 100%"></div>
-
         </div>
-      
       </div>
+      <hr class="featurette-divider">
+
+      <div class="row featurette">
+        <div class="col-md-7">
+          <h2 class="featurette-heading">为您推荐的明星美食</h2>
+          <p class="lead">基于您的喜好，我们为您推荐</p>
+        </div>
+        <div class="col-md-5">
+          <img src='img/bjky.jpg' width="100%">
+          烤鸭是具有世界声誉的北京著名菜式，起源于中国南北朝时期，《食珍录》中已记有炙鸭，在当时是宫廷食品。用料为优质肉食鸭北京鸭，果木炭火烤制，色泽红润，肉质肥而不腻，外脆里嫩。北京烤鸭分为两大流派，而北京最著名的烤鸭店也即是两派的代表。它以色泽红艳，肉质细嫩，味道醇厚，肥而不腻的特色，被誉为“天下美味”。
+          <!-- <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"/><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg> -->
+        </div>
+      </div>
+
 
       <hr class="featurette-divider">
 
@@ -428,7 +422,10 @@
     <!-- FOOTER -->
     <footer class="container">
       <p class="float-end"><a href="#">Back to top</a></p>
-      <p>&copy; 2017–2021 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+      <footer class="container">
+        <p class="float-end"><a href="#">返回顶部</a></p>
+        <p>&copy; 2017–2021 舌尖系统</p>
+      </footer>
     </footer>
   </main>
 

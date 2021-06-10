@@ -257,7 +257,8 @@ function Like(postId){
         // 实现根据postid获取更新后的点赞数
         numUpdated = updatedCount(postId);
         console.log(numUpdated);
-        document.getElementById("like"+postId).innerText = numUpdated.toString()+"已赞";
+        // document.getElementById("like"+postId).innerText = numUpdated.toString()+"已赞";
+        $('#like{0}'.format(postId)).html(numUpdated.toString()+"已赞");
     }
     else {
         alert("您已点赞");

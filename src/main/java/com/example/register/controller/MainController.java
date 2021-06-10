@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.register.model.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.jws.soap.SOAPBinding;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -593,6 +594,90 @@ public class MainController extends LoginController{
             }
         }
         return res;
+    }
+
+    private List<Integer> getLikeRank(User user){
+        //获得每个用户的点赞排名
+        List<LikedInfo> likedInfos = likedRepository.findAllByUserId(user.getId());
+        //用户点赞集合
+        List<Integer> tagSet = new ArrayList<>();
+        //点赞tagID，点赞数
+        Map<Integer, Integer> pairs = new TreeMap<>(new Comparator<Integer>(){
+            /*
+             * int compare(Object o1, Object o2) 返回一个基本类型的整型，
+             * 返回负数表示：o1 小于o2，
+             * 返回0 表示：o1和o2相等，
+             * 返回正数表示：o1大于o2。
+             */
+            public int compare(Integer a,Integer b){
+                return b-a;
+            }
+        });
+        for(int i=0;i<likedInfos.size();i++){
+            LikedInfo likedInfo = likedInfos.get(i);
+            int tagId = postInfoRepository.getById(likedInfo.getPostId()).getFoodtag().getid()-1;
+            if(!tagSet.contains(tagId)){
+                tagSet.add(tagId);
+                pairs.put(tagId, 0);
+            }
+            pairs.put(tagId, pairs.get(tagId)+1);
+        }
+        List<Map.Entry<Integer,Integer>> list = new ArrayList<Map.Entry<Integer,Integer>>(pairs.entrySet());
+        //然后通过比较器来实现排序
+        Collections.sort(list,new Comparator<Map.Entry<Integer,Integer>>() {
+            //降序排序
+            public int compare(Map.Entry<Integer,Integer> n1,
+                               Map.Entry<Integer,Integer> n2) {
+                return n2.getValue()-n1.getValue();
+            }
+
+        });
+        System.out.println(list.toString());
+        List<Integer> res = new ArrayList();
+        for (Map.Entry<Integer, Integer> mapping:list) {
+            res.add(mapping.getKey());
+        }
+
+        System.out.println(res.toString());
+        return res;
+    }
+
+    @RequestMapping("data/getGraph")
+    @ResponseBody
+    public String getGraph(){
+        List<Foodtag> tags= tagRepository.findAll();
+        Graph graph = new Graph(tags.size());
+        for(int i=0;i<tags.size();i++){
+            graph.setNode(i, tags.get(i).getName());
+        }
+        List<User> users = userRepository.findAll();
+        List<List<Integer>> userRank = new ArrayList<>();
+        for(int i=0;i<users.size();i++){
+            userRank.add(getLikeRank(users.get(i)));
+        }
+        System.out.println(userRank.toString());
+        int i = 0;
+        while (true){
+            List<Integer> nodes = new ArrayList<>();
+            for(int j=0;j<userRank.size();j++){
+                if(userRank.get(j).size()>i){
+                    nodes.add(j);
+                }
+            }
+            System.out.println(nodes.toString());
+            if(nodes.size()<=1){
+                break;
+            }
+            for(int j=0;j<nodes.size();j++){
+                for(int k=j+1;k<nodes.size();k++){
+                    if(userRank.get(nodes.get(j)).get(i)!=userRank.get(nodes.get(k)).get(i))
+                    graph.addLink(userRank.get(nodes.get(j)).get(i),userRank.get(nodes.get(k)).get(i));
+                }
+            }
+            i ++;
+        }
+        System.out.println(graph.toString());
+        return graph.toString();
     }
 }
 

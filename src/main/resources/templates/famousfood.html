@@ -19,32 +19,34 @@
       <link rel="stylesheet" href="./css/ol.css" type="text/css">
       <style>
          .map {
-           height: 580px;
+           height: 100%;
            width: 60%;
-           
-           position: relative;
-           float: left;
+           left: 40%;
+           position: absolute;
+           /*float: left;*/
          }
-         .xttblog{   
-            width: 40%;   
-            height: 580px;   
-            position: relative;   
-            float: left;  
-            overflow: auto;   
-         }   
-         .mylist li{
-            margin-bottom: 110px;
+         .xttblog{
+            width: 40%;
+            height: 100%;
+            position: absolute;
+            left: 0%;
+            /*overflow: auto;   */
          }
+         /*.mylist li{*/
+         /*   margin-bottom: 10%;*/
+         /*   width: 100%;*/
+         /*   right: 0%;*/
+         /*}*/
          
        </style>
-   </head>
-   <body>
+      </head>
+      <body>
         <!-- 最上面的导航框 -->
         <nav class="navbar navbar-expand navbar-dark bg-dark osahan-nav-top p-0">
          <div class="container">
 
             <!-- 点击logo刷新主页 -->
-            <a class="navbar-brand mr-2" href="index.html"><img src="img/logo.png" alt=""> 
+            <a class="navbar-brand mr-2" href="index.html"><img src="img/logo.png" alt="">
             </a>
             <!-- 搜索框 -->
             <form class="d-none d-sm-inline-block form-inline mr-auto my-2 my-md-0 mw-100 navbar-search">
@@ -56,7 +58,7 @@
                      </button>
                   </div>
                </div>
-            </form> 
+            </form>
 
             <ul class="navbar-nav ml-auto d-flex align-items-center">
                <li class="nav-item dropdown no-arrow d-sm-none">

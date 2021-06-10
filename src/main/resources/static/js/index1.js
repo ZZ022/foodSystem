@@ -1,3 +1,8 @@
+
+if (option && typeof option === 'object') {
+    myChart.setOption(option);
+}
+
 var map = new ol.Map({
     target: "map",
     layers: [
@@ -27,60 +32,114 @@ var myChart = echarts.init(dom);
 var app = {};
 var option;
 var ROOT_PATH = 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples';
-    myChart.showLoading();
-    $.getJSON(ROOT_PATH + '/data/asset/data/les-miserables.json', function (graph) {
-    myChart.hideLoading();
-    graph.nodes.forEach(function (node) {
-    node.label = {
-    show: node.symbolSize > 30
-};
-});
 
-    option = {
-    title: {
-    text: '美食圈网络图',
-    subtext: 'Default layout',
-    top: 'bottom',
-    left: 'right'
-},
-    tooltip: {},
-    legend: [{
-    // selectedMode: 'single',
-    data: graph.categories.map(function (a) {
-    return a.name;
+function  mySum(arr){
+    var res = 0;
+    console.log(res)
+    for(var i = 0;i<=arr.length;i++){
+        res += arr[i];
+    }
+    console.log(res)
+    return res;
+}
+
+
+
+
+$.ajax({
+    url:'data/getGraph',
+    success: function (res) {
+        console.log(res)
+        var x0 = -100
+        var y0 = 100
+        var flag = [[1,1],[1,-1],[-1,1],[-1,-1]]
+        res = JSON.parse(res)
+        console.log(res)
+        myChart.showLoading();
+        myChart.hideLoading();
+        var graph = [
+            {
+                name: '美食网络',
+                type: 'graph',
+                layout: 'none',
+                data: [],
+                links: [],
+                categories: [],
+                roam: true,
+                label: {
+                    position: 'right',
+                    formatter: '{b}'
+                },
+                lineStyle: {
+                    color: 'source',
+                    curveness: 0.3,
+                    width:5
+                },
+                emphasis: {
+                    focus: 'adjacency',
+                    lineStyle: {
+                        width: 15
+                    }
+                }
+            }
+        ];
+        console.log(graph)
+        for(var i=0;i<res.size;i++){
+            let x = flag[i%4][0]*(parseInt(i/4)+1)*10+x0;
+            let y = flag[i%4][1]*(parseInt(i/4)+1)*10+y0;
+            let size= 0;
+            for(var k=0;k<res.size;k++){
+                console.log(res.links[i][k]);
+                size += res.links[i][k];
+            }
+            console.log(x)
+            console.log(y)
+            // console.log('pushing');
+            graph[0].data.push({  "id": String(i),
+                "name": res.nodes[i],
+                "symbolSize": Math.min(size, 30),
+                // "value": 28.685715,
+                "x": x,
+                "y":y,
+                "category": i})
+            graph[0].categories.push({
+                "name":res.nodes[i]
+            })
+        }
+        for(var i=0;i<res.size;i++){
+            for(var j=i+1;j<res.size;j++){
+                if(res.links[i][j]!=0){
+                    graph[0].links.push({
+                        "source": String(i),
+                        "target": String(j),
+                        "value": res.links[i][j],
+                    })
+                }
+            }
+        }
+        console.log(JSON.stringify(graph))
+        option = {
+                title: {
+                    text: '美食圈网络图',
+                    subtext: 'Default layout',
+                    top: 'bottom',
+                    left: 'right'
+                },
+                tooltip: {},
+                legend: [{
+                    // selectedMode: 'single',
+                    data: graph[0].categories.map(function (a) {
+                        return a.name;
+                    })
+                }],
+                animationDuration: 1500,
+                animationEasingUpdate: 'quinticInOut',
+                series:graph,
+            };
+
+            if (option && typeof option === 'object') {
+                myChart.setOption(option);
+            }
+    }
+
 })
-}],
-    animationDuration: 1500,
-    animationEasingUpdate: 'quinticInOut',
-    series: [
-{
-    name: 'Les Miserables',
-    type: 'graph',
-    layout: 'none',
-    data: graph.nodes,
-    links: graph.links,
-    categories: graph.categories,
-    roam: true,
-    label: {
-    position: 'right',
-    formatter: '{b}'
-},
-    lineStyle: {
-    color: 'source',
-    curveness: 0.3
-},
-    emphasis: {
-    focus: 'adjacency',
-    lineStyle: {
-    width: 10
-}
-}
-}
-    ]
-};
-    myChart.setOption(option);
-});
-
-    if (option && typeof option === 'object') {
-    myChart.setOption(option);
-}
