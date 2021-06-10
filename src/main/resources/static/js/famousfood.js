@@ -1,17 +1,35 @@
 //初始化地图
+// var map = new ol.Map({
+//     target: 'map',
+//     layers: [
+//       new ol.layer.Tile({
+//         source: new ol.source.OSM()
+//       })
+//     ],
+//     view: new ol.View({
+//       center: new ol.proj.fromLonLat([117.191166,34.289749],'EPSG:3857'),
+//       zoom: 5
+//     })
+// });
 var map = new ol.Map({
-    target: 'map',
+    target: 'map', // 关联到对应的div容器
     layers: [
-      new ol.layer.Tile({
-        source: new ol.source.OSM()
-      })
+        new ol.layer.Tile({ // OpenStreetMap图层
+            source: new ol.source.OSM()
+        }),
+        new ol.layer.Tile({
+            source: new ol.source.Stamen({
+                layer: 'watercolor'
+            }),
+            opacity: 0.5
+            // visible: false // 先隐藏该图层
+        }),
     ],
     view: new ol.View({
       center: new ol.proj.fromLonLat([117.191166,34.289749],'EPSG:3857'),
       zoom: 5
     })
 });
-
 
 var image_urls=[];
 var positions = [];
