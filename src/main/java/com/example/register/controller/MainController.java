@@ -345,10 +345,12 @@ public class MainController extends LoginController{
         for (Map.Entry<Integer,Integer> mapping:list) {
             String tagName = postInfoRepository.findById(mapping.getKey()).get().getFoodtag().getName();
             String image = mediaRepository.findByPostInfo(postInfoRepository.findById(mapping.getKey()).get()).getPath();
-            String city = tagRepository.findByName(tagName).getCity().getName();
+            City city = tagRepository.findByName(tagName).getCity();
+            Float lat = city.getLat();
+            Float lng = city.getLng();
             if(!map_tag.containsKey(tagName)){
                 map_tag.put(tagName,image);
-                rankInfos.add(tagName + "," + city + "," +image);
+                rankInfos.add(tagName + "," + lat + "," + lng + "," +image);
             }
 //               rankedObject.put(userName,content);
         }

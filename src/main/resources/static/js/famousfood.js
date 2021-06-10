@@ -14,32 +14,38 @@ var map = new ol.Map({
 
 
 var image_urls=[];
+var positions = [];
 
 $.ajax({
     url:'data/getImages',
     data:{},
     async: false,
     success:function (res) {
-        // 获取到需要的image数组和相应的city(后续加上经纬度
+        // 获取到需要的image数组和相应的city经纬度
         res = res.slice(1,-1);
         arr = res.split(",");
         var arrSize = arr.length;
-        for(var i=0;i<arrSize;i+=3){
-            image_urls.push(arr[i+2])
+        for(var i=0;i<arrSize;i+=4){
+            image_urls.push(arr[i+3])
+        }
+        for(var i=0;i<arrSize;i+=4){
+            positions.push(arr[i+1]);
+            positions.push(arr[i+2]);
         }
         console.log(image_urls);
+        console.log(positions);
     }
 })
 
 
 //创建标签,需要美食的经纬度，
-var lon=105.191166;
-var lat=25.289749;
+// var lon=105.191166;
+// var lat=25.289749;
 var name1="beijing";
 var romeArr = [];
-for(var i=0;i<image_urls.length;i++){
-    lon=lon+Math.random()*2;
-    lat=lat+Math.random()*2;
+for(var i=0;i<positions.length;i+=2){
+    lon=positions[i];
+    lat=positions[i+1];
     var rome = new ol.Feature({
         geometry:new ol.geom.Point(new ol.proj.fromLonLat([lon,lat],'EPSG:3857')),
         name:name1,
