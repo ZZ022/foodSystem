@@ -272,3 +272,49 @@ $.ajax({
     }
 })
 $('#hrefToProfile').attr('href', 'index?uid={0}'.format(vid));
+
+$.ajax({
+    url:'data/likeRankedPosts',
+    data:{"uid":uid},
+    success:function (res) {
+        // 获取到前五个点赞最多的list
+        console.log(res)
+        res = res.slice(1,-1);
+        arr = res.split(",");
+        var arrSize = arr.length;
+        for (var i=0; i<arrSize; i+=2){
+            var rankedHtml ="<div class=\"d-flex align-items-center osahan-post-header mb-3 people-list\">\n" +
+                "                           <div class=\"dropdown-list-image mr-3\">\n" +
+                "                              <img class=\"rounded-circle\" src=\"img/p8.png\" alt=\"\">\n" +
+                "                              <div class=\"status-indicator bg-success\"></div>\n" +
+                "                           </div>\n" +
+                "                           <div class=\"font-weight-bold mr-2\">\n" +
+                "                              <div class=\"text-truncate\">" + arr[i] + "</div>\n" +
+                "                              <div class=\"small text-gray-500\">" + arr[i+1] + "</div>\n" +
+                "                           </div>\n" +
+                "                           <span class=\"ml-auto\"><button type=\"button\" class=\"btn btn-light btn-sm\"><i class=\"feather-chevron-right\"></i></button>\n" +
+                "                           </span>\n" +
+                "                        </div>"
+
+            $('#rankedLike').append(rankedHtml);
+        }
+    }
+})
+
+$.ajax({
+    url:'data/recommend',
+    success: function (res){
+        console.log(res);
+        htmlTemplate = '                     <div class="shadow-sm border rounded bg-white job-item mb-3">\n' +
+            '                        <div class="p-3 border-bottom">\n' +
+            '                        <h6 class="font-weight-bold text-gold" >{0}</h6><button onclick=search("{0}")>相关帖子</button>\n' +
+            '                        </div>\n' +
+            '                     </div>'
+        for(var i=0;i<res.length;i++){
+            console.log(htmlTemplate.format(String(res[i])));
+            $('#divRecommend').append(htmlTemplate.format(String(res[i])));
+        }
+
+
+    }
+})

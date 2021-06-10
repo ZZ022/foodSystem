@@ -114,7 +114,7 @@ for(let j=0;j<image_urls.length;j++){
   console.log(imgg.src);
 
   imgg.setAttribute("onclick","javascript:location.href='food.html'");
-  imgg.setAttribute("style","width: 180px;height: 180px;object-fit: cover;");
+  imgg.setAttribute("style","width: 168px;height: 168px;object-fit: cover;");
   list.appendChild(imgg);
   
 }

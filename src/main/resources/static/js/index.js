@@ -540,9 +540,10 @@ $.ajax({
                 // console.log(name);
                 // var city = getDomByXpath('//*[@id="myTabContent"]/div[4]/div/div/div/div['+ j+2 +']/a/div/div[1]/div/div');
                 // var likeNum = getDomByXpath('//*[@id="myTabContent"]/div[4]/div/div/div/div['+ j+2 +']/a/div/div[2]/span');
-            $('#tagName1').textContent=arr[i];
-            $('#tagCity1').textContent = arr[i+1];
-            $('#like1').textContent = arr[i+2] + "点赞";
+            $('#tagName'+j+'').textContent=arr[i];
+            $('#tagCity'+j+'').textContent = arr[i+1];
+            $('#like'+j+'').textContent = arr[i+2] + "点赞";
+            j++;
 
         }
     }
