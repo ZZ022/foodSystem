@@ -43,6 +43,7 @@ $.ajax({
 // var lat=25.289749;
 var name1="beijing";
 var romeArr = [];
+var j=0;
 for(var i=0;i<positions.length;i+=2){
     lon=positions[i];
     lat=positions[i+1];
@@ -50,7 +51,8 @@ for(var i=0;i<positions.length;i+=2){
         geometry:new ol.geom.Point(new ol.proj.fromLonLat([lon,lat],'EPSG:3857')),
         name:name1,
     });
-    rome._id=i;
+    rome._id=j;
+    j++;
     //标注样式设置
     rome.setStyle(new ol.style.Style({
         image: new ol.style.Icon(({

@@ -314,8 +314,11 @@ public class MainController extends LoginController{
 //            判断帖子是否具有多媒体数据
 //            计算帖子的点赞数
             if(mediaRepository.existsByPostInfo(postInfoRepository.findById(posts.get(i).getnId()).get())){
-                int likeNum = likedRepository.findAllByPostId(posts.get(i).getnId()).size();
-                map.put(posts.get(i).getnId(),likeNum);
+                if(mediaRepository.findByPostInfo(posts.get(i)).isPhoto()){
+                    int likeNum = likedRepository.findAllByPostId(posts.get(i).getnId()).size();
+                    map.put(posts.get(i).getnId(),likeNum);
+                }
+
             }
 
         }
@@ -467,7 +470,7 @@ public class MainController extends LoginController{
 
         }
         else if(num>0 && num<5){
-            List<Map.Entry<Integer, Integer>> postRanked = list.subList(0,num+1);
+            List<Map.Entry<Integer, Integer>> postRanked = list.subList(0,num);
 
             for(Map.Entry<Integer,Integer> mapping:postRanked){
                 String userName = postInfoRepository.findById(mapping.getKey()).get().getUser().getName();
